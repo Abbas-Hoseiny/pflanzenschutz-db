@@ -1,0 +1,36 @@
+hinweis_kode,hinweis_text,beschreibung
+H200,"Instabil, explosiv",Physikalische Gefahr
+H201,"Explosiv, Gefahr der Massenexplosion",Physikalische Gefahr
+H202,"Explosiv; große Gefahr durch Splitter, Spreng- und Wurfstücke",Physikalische Gefahr
+H225,Flüssigkeit und Dampf leicht entzündbar,Physikalische Gefahr
+H226,Flüssigkeit und Dampf entzündbar,Physikalische Gefahr
+H301,Giftig bei Verschlucken,Gesundheitsgefahr
+H302,Gesundheitsschädlich bei Verschlucken,Gesundheitsgefahr
+H304,Kann bei Verschlucken und Eindringen in die Atemwege tödlich sein,Gesundheitsgefahr
+H310,Lebensgefahr bei Hautkontakt,Gesundheitsgefahr
+H314,Verursacht schwere Verätzungen der Haut und schwere Augenschäden,Gesundheitsgefahr
+H315,Verursacht Hautreizungen,Gesundheitsgefahr
+H317,Kann allergische Hautreaktionen verursachen,Gesundheitsgefahr
+H318,Verursacht schwere Augenschäden,Gesundheitsgefahr
+H319,Verursacht schwere Augenreizung,Gesundheitsgefahr
+H330,Lebensgefahr bei Einatmen,Gesundheitsgefahr
+H331,Giftig bei Einatmen,Gesundheitsgefahr
+H332,Gesundheitsschädlich bei Einatmen,Gesundheitsgefahr
+H334,"Kann bei Einatmen Allergie, asthmaartige Symptome oder Atembeschwerden verursachen",Gesundheitsgefahr
+H335,Kann die Atemwege reizen,Gesundheitsgefahr
+H336,Kann Schläfrigkeit und Benommenheit verursachen,Gesundheitsgefahr
+H340,Kann genetische Defekte verursachen,Gesundheitsgefahr
+H341,Kann vermutlich genetische Defekte verursachen,Gesundheitsgefahr
+H350,Kann Krebs erzeugen,Gesundheitsgefahr
+H351,Kann vermutlich Krebs erzeugen,Gesundheitsgefahr
+H360,Kann die Fruchtbarkeit beeinträchtigen oder das Kind im Mutterleib schädigen,Gesundheitsgefahr
+H361,Kann vermutlich die Fruchtbarkeit beeinträchtigen oder das Kind im Mutterleib schädigen,Gesundheitsgefahr
+H370,Schädigt die Organe,Gesundheitsgefahr
+H371,Kann die Organe schädigen,Gesundheitsgefahr
+H372,Schädigt die Organe bei längerer oder wiederholter Exposition,Gesundheitsgefahr
+H373,Kann die Organe schädigen bei längerer oder wiederholter Exposition,Gesundheitsgefahr
+H400,Sehr giftig für Wasserorganismen,Umweltgefahr
+H410,Sehr giftig für Wasserorganismen mit langfristiger Wirkung,Umweltgefahr
+H411,Giftig für Wasserorganismen mit langfristiger Wirkung,Umweltgefahr
+H412,Schädlich für Wasserorganismen mit langfristiger Wirkung,Umweltgefahr
+H413,Kann für Wasserorganismen schädlich sein mit langfristiger Wirkung,Umweltgefahr

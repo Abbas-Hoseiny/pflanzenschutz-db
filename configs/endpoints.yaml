@@ -1,0 +1,93 @@
+# BVL API Endpoints Configuration
+# IMPORTANT: All paths must be relative without leading slash
+# Using leading slash would break urljoin and redirect to wrong URL
+
+base_url: "https://psm-api.bvl.bund.de/ords/psm/api-v1/"
+
+endpoints:
+  # 1. Stand - API status/date information
+  - name: "stand"
+    path: "stand"
+    table: "bvl_stand"
+    primary_key: "id"
+    description: "API status and data date information"
+    
+  # 2. Mittel - Plant protection products
+  - name: "mittel"
+    path: "mittel"
+    table: "bvl_mittel"
+    primary_key: "kennr"
+    description: "Plant protection products (main table)"
+    
+  # 3. AWG - Application areas
+  - name: "awg"
+    path: "awg"
+    table: "bvl_awg"
+    primary_key: "awg_id"
+    description: "Application areas for products"
+    
+  # 4. AWG Kultur - Application area cultures
+  - name: "awg_kultur"
+    path: "awg_kultur"
+    table: "bvl_awg_kultur"
+    primary_key: "id"
+    description: "Cultures associated with application areas"
+    
+  # 5. AWG Schadorganismus - Application area pests
+  - name: "awg_schadorg"
+    path: "awg_schadorg"
+    table: "bvl_awg_schadorg"
+    primary_key: "id"
+    description: "Pest organisms associated with application areas"
+    
+  # 6. AWG Aufwand - Application rates
+  - name: "awg_aufwand"
+    path: "awg_aufwand"
+    table: "bvl_awg_aufwand"
+    primary_key: "id"
+    description: "Application rates for application areas"
+    
+  # 7. AWG Wartezeit - Waiting periods
+  - name: "awg_wartezeit"
+    path: "awg_wartezeit"
+    table: "bvl_awg_wartezeit"
+    primary_key: "id"
+    description: "Waiting periods for application areas"
+    
+  # 8. Wirkstoffe - Active substances
+  - name: "wirkstoff"
+    path: "wirkstoff"
+    table: "bvl_wirkstoff"
+    primary_key: "wirkstoff_kode"
+    description: "Active substances (reference data)"
+    
+  # 9. Mittel Wirkstoffgehalt - Product active substance content
+  - name: "mittel_wirkstoff"
+    path: "mittel_wirkstoff"
+    table: "bvl_mittel_wirkstoff"
+    primary_key: "id"
+    description: "Active substance content in products"
+    
+  # 10. Mittel Vertrieb - Product distributors
+  - name: "mittel_vertrieb"
+    path: "mittel_vertrieb"
+    table: "bvl_mittel_vertrieb"
+    primary_key: "id"
+    description: "Product distributors and manufacturers"
+
+# Static lookup sources (CSV files)
+static_sources:
+  ghs_hazards:
+    file: "data/static/ghs_gefahrenhinweise.csv"
+    table: "bvl_ghs_gefahrenhinweise"
+    description: "GHS hazard statements lookup"
+    
+  active_substances:
+    file: "data/static/wirkstoffe.csv"
+    table: "bvl_wirkstoff"
+    description: "Active substances lookup (supplemental)"
+    
+  distributors:
+    file: "data/static/vertriebsfirmen.csv"
+    table: "bvl_vertriebsfirma"
+    description: "Distributor/manufacturer information"

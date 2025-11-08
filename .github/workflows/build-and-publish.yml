@@ -1,0 +1,91 @@
+name: Build and Publish BVL Database
+
+on:
+  schedule:
+    # Run daily at 3 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Run tests
+        run: |
+          pytest scripts/tests/ -v --tb=short
+
+  build:
+    name: Build Database
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Fetch BVL data
+        run: |
+          python scripts/fetch_bvl_data.py \
+            --output-dir data/output \
+            --verbose
+            
+      - name: Validate export
+        run: |
+          python scripts/validate_export.py data/output/pflanzenschutz.sqlite
+          
+      - name: Generate checksums
+        run: |
+          cd data/output
+          sha256sum pflanzenschutz.sqlite > pflanzenschutz.sqlite.sha256
+          sha256sum pflanzenschutz.sqlite.br > pflanzenschutz.sqlite.br.sha256
+          sha256sum pflanzenschutz.sqlite.zip > pflanzenschutz.sqlite.zip.sha256
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bvl-database
+          path: |
+            data/output/pflanzenschutz.sqlite
+            data/output/pflanzenschutz.sqlite.br
+            data/output/pflanzenschutz.sqlite.zip
+            data/output/manifest.json
+            data/output/*.sha256
+          retention-days: 90
+          
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./data/output
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: 'Update BVL database - ${{ github.event.head_commit.message }}'
