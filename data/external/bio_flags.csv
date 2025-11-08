@@ -1,0 +1,6 @@
+kennr,is_bio,certification_body,notes
+# This file contains manually curated bio/organic certification information
+# Format: kennr,is_bio,certification_body,notes
+# is_bio: 1 for organic, 0 for conventional
+# Example entries (to be populated with actual data):
+# 024123-00,1,DE-ÖKO-006,Certified organic fungicide
