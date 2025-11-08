@@ -9,10 +9,15 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   lint-and-test:
     name: Lint and Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout code
@@ -36,6 +41,8 @@ jobs:
     name: Build Database
     needs: lint-and-test
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed for GitHub Pages deployment
     
     steps:
       - name: Checkout code
