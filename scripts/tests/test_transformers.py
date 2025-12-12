@@ -8,7 +8,7 @@ from scripts.helpers.transformers import (
     map_stand_record,
     map_mittel_record,
     map_awg_record,
-    map_mittel_wirkstoff_record,
+    map_wirkstoff_gehalt_record,
     map_mittel_ghs_record,
     get_mapper
 )
@@ -70,22 +70,28 @@ def test_map_awg_record():
     assert result["awg_titel"] == "Test Application"
 
 
-def test_map_mittel_wirkstoff_record():
-    """Test mittel wirkstoff mapping."""
+def test_map_wirkstoff_gehalt_record():
+    """Test wirkstoff_gehalt mapping with BVL API field names."""
     raw = {
         "kennr": "024123-00",
-        "wirkstoffKode": "WS001",
-        "gehalt": 10.5,
-        "gehaltEinheit": "g/l"
+        "wirknr": "0757",
+        "wirkvar": "X00",
+        "gehalt_rein": 0,
+        "gehalt_rein_grundstruktur": 8.25,
+        "gehalt_einheit": "GL",
+        "gehalt_bio": None,
+        "gehalt_bio_einheit": None
     }
     
-    result = map_mittel_wirkstoff_record(raw)
+    result = map_wirkstoff_gehalt_record(raw)
     
     assert result["kennr"] == "024123-00"
-    assert result["wirkstoff_kode"] == "WS001"
-    assert result["wirkstoff_name"] is None  # Will be enriched
-    assert result["gehalt"] == 10.5
-    assert result["gehalt_einheit"] == "g/l"
+    assert result["wirknr"] == "0757"
+    assert result["wirkvar"] == "X00"
+    assert result["gehalt_rein"] == 0
+    assert result["gehalt_rein_grundstruktur"] == 8.25
+    assert result["gehalt_einheit"] == "GL"
+    assert "payload_json" in result
 
 
 def test_map_mittel_ghs_record():
