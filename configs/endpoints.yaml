@@ -54,19 +54,19 @@ endpoints:
     primary_key: "id"
     description: "Waiting periods for application areas"
     
-  # 8. Wirkstoffe - Active substances
+  # 8. Wirkstoffe - Active substances (lookup table)
   - name: "wirkstoff"
     path: "wirkstoff"
     table: "bvl_wirkstoff"
-    primary_key: "wirkstoff_kode"
-    description: "Active substances (reference data)"
+    primary_key: "wirknr"
+    description: "Active substances reference data (lookup by wirknr)"
     
-  # 9. Mittel Wirkstoffgehalt - Product active substance content
-  - name: "mittel_wirkstoff"
-    path: "mittel_wirkstoff"
-    table: "bvl_mittel_wirkstoff"
+  # 9. Wirkstoffgehalt - Product active substance content
+  - name: "wirkstoff_gehalt"
+    path: "wirkstoff_gehalt"
+    table: "bvl_wirkstoff_gehalt"
     primary_key: "id"
-    description: "Active substance content in products"
+    description: "Active substance content in products (links mittel to wirkstoff)"
     
   # 10. Mittel Vertrieb - Product distributors
   - name: "mittel_vertrieb"

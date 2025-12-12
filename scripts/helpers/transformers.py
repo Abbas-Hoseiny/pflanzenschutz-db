@@ -150,6 +150,7 @@ def map_awg_wartezeit_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_wirkstoff_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map wirkstoff (active substance) record.
+    Maps data from BVL API endpoint /wirkstoff/
     
     Args:
         record: Raw API record
@@ -158,17 +159,19 @@ def map_wirkstoff_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "wirkstoff_kode": record.get("wirkstoffKode"),
-        "wirkstoff_name": record.get("wirkstoffName"),
-        "cas_nr": record.get("casNr"),
-        "beschreibung": record.get("beschreibung"),
+        "wirknr": record.get("WIRKNR") or record.get("wirknr"),
+        "wirkstoffname": record.get("WIRKSTOFFNAME") or record.get("wirkstoffname"),
+        "wirkstoffname_en": record.get("WIRKSTOFFNAME_EN") or record.get("wirkstoffname_en"),
+        "kategorie": record.get("KATEGORIE") or record.get("kategorie"),
+        "genehmigt": record.get("GENEHMIGT") or record.get("genehmigt"),
         "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
 
-def map_mittel_wirkstoff_record(record: Dict[str, Any]) -> Dict[str, Any]:
+def map_wirkstoff_gehalt_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Map mittel wirkstoff (product active substance) record.
+    Map wirkstoff_gehalt (product active substance content) record.
+    Maps data from BVL API endpoint /wirkstoff_gehalt/
     
     Args:
         record: Raw API record
@@ -177,11 +180,15 @@ def map_mittel_wirkstoff_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "kennr": record.get("kennr"),
-        "wirkstoff_kode": record.get("wirkstoffKode"),
-        "wirkstoff_name": None,  # Will be enriched via lookup
-        "gehalt": record.get("gehalt"),
-        "gehalt_einheit": record.get("gehaltEinheit")
+        "kennr": record.get("KENNR") or record.get("kennr"),
+        "wirknr": record.get("WIRKNR") or record.get("wirknr"),
+        "wirkvar": record.get("WIRKVAR") or record.get("wirkvar"),
+        "gehalt_rein": record.get("GEHALT_REIN") or record.get("gehalt_rein"),
+        "gehalt_rein_grundstruktur": record.get("GEHALT_REIN_GRUNDSTRUKTUR") or record.get("gehalt_rein_grundstruktur"),
+        "gehalt_einheit": record.get("GEHALT_EINHEIT") or record.get("gehalt_einheit"),
+        "gehalt_bio": record.get("GEHALT_BIO") or record.get("gehalt_bio"),
+        "gehalt_bio_einheit": record.get("GEHALT_BIO_EINHEIT") or record.get("gehalt_bio_einheit"),
+        "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
 
@@ -230,7 +237,7 @@ RECORD_MAPPERS = {
     "awg_aufwand": map_awg_aufwand_record,
     "awg_wartezeit": map_awg_wartezeit_record,
     "wirkstoff": map_wirkstoff_record,
-    "mittel_wirkstoff": map_mittel_wirkstoff_record,
+    "wirkstoff_gehalt": map_wirkstoff_gehalt_record,
     "mittel_vertrieb": map_mittel_vertrieb_record
 }
 
