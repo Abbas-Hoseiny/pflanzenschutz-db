@@ -65,11 +65,11 @@ def map_awg_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "awg_id": record.get("awgId"),
+        "awg_id": record.get("awg_id"),
         "kennr": record.get("kennr"),
-        "awg_titel": record.get("awgTitel"),
         "awg_nr": record.get("awgnr"),
-        "gueltig_bis": record.get("gueltigBis"),
+        "anwendungsbereich": record.get("anwendungsbereich"),
+        "anwendungen_je_kultur": record.get("anwendungen_max_je_vegetation"),
         "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
@@ -85,9 +85,10 @@ def map_awg_kultur_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "awg_id": record.get("awgId"),
-        "kultur_kode": record.get("kulturKode"),
-        "kultur_text": record.get("kulturText")
+        "awg_id": record.get("awg_id"),
+        "kultur_kode": record.get("kultur"),
+        "ausgenommen": record.get("ausgenommen"),
+        "sortier_nr": record.get("sortier_nr")
     }
 
 
@@ -102,9 +103,10 @@ def map_awg_schadorg_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "awg_id": record.get("awgId"),
-        "schadorg_kode": record.get("schadorgKode"),
-        "schadorg_text": record.get("schadorgText")
+        "awg_id": record.get("awg_id"),
+        "schadorg_kode": record.get("schadorg"),
+        "ausgenommen": record.get("ausgenommen"),
+        "sortier_nr": record.get("sortier_nr")
     }
 
 
@@ -119,13 +121,14 @@ def map_awg_aufwand_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "awg_id": record.get("awgId"),
-        "aufwandmenge": record.get("aufwandmenge"),
-        "aufwandmenge_einheit": record.get("aufwandmengeEinheit"),
-        "aufwandmenge_min": record.get("aufwandmengeMin"),
-        "aufwandmenge_max": record.get("aufwandmengeMax"),
-        "wassermenge": record.get("wassermenge"),
-        "wassermenge_einheit": record.get("wassermengeEinheit")
+        "awg_id": record.get("awg_id"),
+        "aufwand_bedingung": record.get("aufwandbedingung"),
+        "sortier_nr": record.get("sortier_nr"),
+        "mittel_aufwand": record.get("m_aufwand"),
+        "mittel_aufwand_einheit": record.get("m_aufwand_einheit"),
+        "wasser_aufwand_von": record.get("w_aufwand_von"),
+        "wasser_aufwand_bis": record.get("w_aufwand_bis"),
+        "wasser_aufwand_einheit": record.get("w_aufwand_einheit")
     }
 
 
@@ -140,10 +143,14 @@ def map_awg_wartezeit_record(record: Dict[str, Any]) -> Dict[str, Any]:
         Mapped record for database
     """
     return {
-        "awg_id": record.get("awgId"),
-        "kultur_kode": record.get("kulturKode"),
-        "wartezeit_tage": record.get("wartezeitTage"),
-        "wartezeit_text": record.get("wartezeitText")
+        "awg_id": record.get("awg_id"),
+        "awg_wartezeit_nr": record.get("awg_wartezeit_nr"),
+        "kultur_kode": record.get("kultur"),
+        "anwendungsbereich": record.get("anwendungsbereich"),
+        "sortier_nr": record.get("sortier_nr"),
+        "wartezeit_tage": record.get("gesetzt_wartezeit"),
+        "wartezeit_text": record.get("gesetzt_wartezeit_bem"),
+        "erlaeuterung": record.get("erlaeuterung")
     }
 
 
