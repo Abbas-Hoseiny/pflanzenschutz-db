@@ -2,8 +2,8 @@ name: Build and Publish BVL Database
 
 on:
   schedule:
-    # Run daily at 3 AM UTC
-    - cron: '0 3 * * *'
+    # Run every 2 days at 3 AM UTC (on odd days: 1st, 3rd, 5th, etc.)
+    - cron: '0 3 1-31/2 * *'
   workflow_dispatch:
   push:
     branches:

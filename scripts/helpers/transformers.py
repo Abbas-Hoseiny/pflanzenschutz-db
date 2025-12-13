@@ -1,6 +1,9 @@
 """
 Data Transformers/Mappers for BVL API Records
+
 Transforms raw API responses into database-ready records.
+IMPORTANT: All field names must match the official BVL API 1:1!
+See: https://github.com/bundesAPI/pflanzenschutzmittelzulassung-api
 """
 
 import json
@@ -13,15 +16,10 @@ logger = logging.getLogger(__name__)
 def map_stand_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map stand (status) record.
-    
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    API: /stand/
     """
     return {
-        "id": 1,  # Always use ID 1 for single stand record
+        "id": 1,
         "stand": record.get("datum"),
         "hinweis": record.get("hinweis"),
         "payload_json": json.dumps(record, ensure_ascii=False)
@@ -31,25 +29,21 @@ def map_stand_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_mittel_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map mittel (product) record.
+    API: /mittel/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - kennr: Primary key (9 chars, e.g. "024213-73")
+    - mittelname: Product name
+    - formulierung_art: Formulation type code
+    - zul_ende: Authorization end date
+    - zul_erstmalig_am: First authorization date
     """
     return {
         "kennr": record.get("kennr"),
         "mittelname": record.get("mittelname"),
-        "zulassungsnummer": record.get("zulnr"),
-        "zulassungsende": record.get("zulende"),
-        "zulassungsinhaber": record.get("inhaber"),
-        "parallelimporteur": record.get("parallelimporteur"),
-        "formulierung": record.get("formulierung"),
-        "antragssteller": record.get("antragsteller"),
-        "stand": record.get("stand"),
-        "zusatzinfo": record.get("zusatzinfo"),
-        "auflage": record.get("auflage"),
+        "formulierung_art": record.get("formulierung_art"),
+        "zul_ende": record.get("zul_ende"),
+        "zul_erstmalig_am": record.get("zul_erstmalig_am"),
         "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
@@ -57,19 +51,37 @@ def map_mittel_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_awg_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map AWG (application area) record.
+    API: /awg/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields - ALL preserved 1:1
     """
     return {
         "awg_id": record.get("awg_id"),
         "kennr": record.get("kennr"),
-        "awg_nr": record.get("awgnr"),
+        "antragnr": record.get("antragnr"),
+        "awgnr": record.get("awgnr"),
         "anwendungsbereich": record.get("anwendungsbereich"),
-        "anwendungen_je_kultur": record.get("anwendungen_max_je_vegetation"),
+        "anwendungstechnik": record.get("anwendungstechnik"),
+        "einsatzgebiet": record.get("einsatzgebiet"),
+        "wirkungsbereich": record.get("wirkungsbereich"),
+        "anwendungen_anz_je_befall": record.get("anwendungen_anz_je_befall"),
+        "anwendungen_max_je_kultur": record.get("anwendungen_max_je_kultur"),
+        "anwendungen_max_je_vegetation": record.get("anwendungen_max_je_vegetation"),
+        "stadium_kultur_von": record.get("stadium_kultur_von"),
+        "stadium_kultur_bis": record.get("stadium_kultur_bis"),
+        "stadium_kultur_bem": record.get("stadium_kultur_bem"),
+        "stadium_kultur_kodeliste": record.get("stadium_kultur_kodeliste"),
+        "stadium_schadorg_von": record.get("stadium_schadorg_von"),
+        "stadium_schadorg_bis": record.get("stadium_schadorg_bis"),
+        "stadium_schadorg_bem": record.get("stadium_schadorg_bem"),
+        "stadium_schadorg_kodeliste": record.get("stadium_schadorg_kodeliste"),
+        "kultur_erl": record.get("kultur_erl"),
+        "schadorg_erl": record.get("schadorg_erl"),
+        "genehmigung": record.get("genehmigung"),
+        "huk": record.get("huk"),
+        "aw_abstand_von": record.get("aw_abstand_von"),
+        "aw_abstand_bis": record.get("aw_abstand_bis"),
+        "aw_abstand_einheit": record.get("aw_abstand_einheit"),
         "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
@@ -77,16 +89,17 @@ def map_awg_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_awg_kultur_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map AWG kultur (culture) record.
+    API: /awg_kultur/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - awg_id: FK to AWG
+    - kultur: EPPO code (NOT kultur_kode!)
+    - ausgenommen: J/N
+    - sortier_nr: Sort order
     """
     return {
         "awg_id": record.get("awg_id"),
-        "kultur_kode": record.get("kultur"),
+        "kultur": record.get("kultur"),
         "ausgenommen": record.get("ausgenommen"),
         "sortier_nr": record.get("sortier_nr")
     }
@@ -95,16 +108,17 @@ def map_awg_kultur_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_awg_schadorg_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map AWG schadorganismus (pest organism) record.
+    API: /awg_schadorg/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - awg_id: FK to AWG
+    - schadorg: EPPO code (NOT schadorg_kode!)
+    - ausgenommen: J/N
+    - sortier_nr: Sort order
     """
     return {
         "awg_id": record.get("awg_id"),
-        "schadorg_kode": record.get("schadorg"),
+        "schadorg": record.get("schadorg"),
         "ausgenommen": record.get("ausgenommen"),
         "sortier_nr": record.get("sortier_nr")
     }
@@ -113,64 +127,75 @@ def map_awg_schadorg_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_awg_aufwand_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map AWG aufwand (application rate) record.
+    API: /awg_aufwand/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - awg_id: FK to AWG
+    - aufwandbedingung: Condition
+    - sortier_nr: Sort order
+    - m_aufwand: Product amount (NOT mittel_aufwand!)
+    - m_aufwand_einheit: Product unit
+    - w_aufwand_von: Water amount from
+    - w_aufwand_bis: Water amount to
+    - w_aufwand_einheit: Water unit
     """
     return {
         "awg_id": record.get("awg_id"),
-        "aufwand_bedingung": record.get("aufwandbedingung"),
+        "aufwandbedingung": record.get("aufwandbedingung"),
         "sortier_nr": record.get("sortier_nr"),
-        "mittel_aufwand": record.get("m_aufwand"),
-        "mittel_aufwand_einheit": record.get("m_aufwand_einheit"),
-        "wasser_aufwand_von": record.get("w_aufwand_von"),
-        "wasser_aufwand_bis": record.get("w_aufwand_bis"),
-        "wasser_aufwand_einheit": record.get("w_aufwand_einheit")
+        "m_aufwand": record.get("m_aufwand"),
+        "m_aufwand_einheit": record.get("m_aufwand_einheit"),
+        "w_aufwand_von": record.get("w_aufwand_von"),
+        "w_aufwand_bis": record.get("w_aufwand_bis"),
+        "w_aufwand_einheit": record.get("w_aufwand_einheit")
     }
 
 
 def map_awg_wartezeit_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map AWG wartezeit (waiting period) record.
+    API: /awg_wartezeit/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - awg_wartezeit_nr: Primary key
+    - awg_id: FK to AWG
+    - kultur: EPPO code
+    - anwendungsbereich: Application area code
+    - gesetzt_wartezeit: Waiting period in days (NOT tage!)
+    - gesetzt_wartezeit_bem: Remark code
+    - erlaeuterung: Explanation
+    - sortier_nr: Sort order
     """
     return {
-        "awg_id": record.get("awg_id"),
         "awg_wartezeit_nr": record.get("awg_wartezeit_nr"),
+        "awg_id": record.get("awg_id"),
         "kultur": record.get("kultur"),
         "anwendungsbereich": record.get("anwendungsbereich"),
-        "sortier_nr": record.get("sortier_nr"),
-        "tage": record.get("gesetzt_wartezeit"),
-        "bemerkung_kode": record.get("gesetzt_wartezeit_bem"),
-        "erlaeuterung": record.get("erlaeuterung")
+        "gesetzt_wartezeit": record.get("gesetzt_wartezeit"),
+        "gesetzt_wartezeit_bem": record.get("gesetzt_wartezeit_bem"),
+        "erlaeuterung": record.get("erlaeuterung"),
+        "sortier_nr": record.get("sortier_nr")
     }
 
 
 def map_wirkstoff_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map wirkstoff (active substance) record.
-    Maps data from BVL API endpoint /wirkstoff/
+    API: /wirkstoff/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - wirknr: Primary key (max 4 chars)
+    - wirkstoffname: German name
+    - wirkstoffname_en: English name
+    - kategorie: Category
+    - genehmigt: Approved (J/N)
     """
     return {
-        "wirknr": record.get("WIRKNR") or record.get("wirknr"),
-        "wirkstoffname": record.get("WIRKSTOFFNAME") or record.get("wirkstoffname"),
-        "wirkstoffname_en": record.get("WIRKSTOFFNAME_EN") or record.get("wirkstoffname_en"),
-        "kategorie": record.get("KATEGORIE") or record.get("kategorie"),
-        "genehmigt": record.get("GENEHMIGT") or record.get("genehmigt"),
+        "wirknr": record.get("wirknr"),
+        "wirkstoffname": record.get("wirkstoffname"),
+        "wirkstoffname_en": record.get("wirkstoffname_en"),
+        "kategorie": record.get("kategorie"),
+        "genehmigt": record.get("genehmigt"),
         "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
@@ -178,59 +203,39 @@ def map_wirkstoff_record(record: Dict[str, Any]) -> Dict[str, Any]:
 def map_wirkstoff_gehalt_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map wirkstoff_gehalt (product active substance content) record.
-    Maps data from BVL API endpoint /wirkstoff_gehalt/
+    API: /wirkstoff_gehalt/
     
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
-    """
-    return {
-        "kennr": record.get("KENNR") or record.get("kennr"),
-        "wirknr": record.get("WIRKNR") or record.get("wirknr"),
-        "wirkvar": record.get("WIRKVAR") or record.get("wirkvar"),
-        "gehalt_rein": record.get("GEHALT_REIN") or record.get("gehalt_rein"),
-        "gehalt_rein_grundstruktur": record.get("GEHALT_REIN_GRUNDSTRUKTUR") or record.get("gehalt_rein_grundstruktur"),
-        "gehalt_einheit": record.get("GEHALT_EINHEIT") or record.get("gehalt_einheit"),
-        "gehalt_bio": record.get("GEHALT_BIO") or record.get("gehalt_bio"),
-        "gehalt_bio_einheit": record.get("GEHALT_BIO_EINHEIT") or record.get("gehalt_bio_einheit"),
-        "payload_json": json.dumps(record, ensure_ascii=False)
-    }
-
-
-def map_mittel_ghs_record(record: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Map mittel GHS (product hazard statement) record.
-    
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    Official API fields:
+    - kennr: FK to mittel
+    - wirknr: FK to wirkstoff
+    - wirkvar: Variant
+    - gehalt_rein: Pure content
+    - gehalt_rein_grundstruktur: Base structure content
+    - gehalt_einheit: Unit
+    - gehalt_bio: Bio content
+    - gehalt_bio_einheit: Bio unit
     """
     return {
         "kennr": record.get("kennr"),
-        "hinweis_kode": record.get("hinweisKode"),
-        "hinweis_text": None  # Will be enriched via lookup
+        "wirknr": record.get("wirknr"),
+        "wirkvar": record.get("wirkvar"),
+        "gehalt_rein": record.get("gehalt_rein"),
+        "gehalt_rein_grundstruktur": record.get("gehalt_rein_grundstruktur"),
+        "gehalt_einheit": record.get("gehalt_einheit"),
+        "gehalt_bio": record.get("gehalt_bio"),
+        "gehalt_bio_einheit": record.get("gehalt_bio_einheit"),
+        "payload_json": json.dumps(record, ensure_ascii=False)
     }
 
 
 def map_mittel_vertrieb_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
     Map mittel vertrieb (product distributor) record.
-    
-    Args:
-        record: Raw API record
-        
-    Returns:
-        Mapped record for database
+    API: /mittel_vertrieb/
     """
     return {
         "kennr": record.get("kennr"),
-        "hersteller_name": record.get("herstellerName"),
-        "website": None,  # Will be enriched via lookup
-        "rolle": record.get("rolle")
+        "vertriebsfirma_nr": record.get("vertriebsfirma_nr")
     }
 
 
@@ -250,15 +255,7 @@ RECORD_MAPPERS = {
 
 
 def get_mapper(endpoint_name: str):
-    """
-    Get mapper function for endpoint.
-    
-    Args:
-        endpoint_name: Name of the endpoint
-        
-    Returns:
-        Mapper function or None if not found
-    """
+    """Get mapper function for endpoint."""
     mapper = RECORD_MAPPERS.get(endpoint_name)
     if not mapper:
         logger.warning(f"No mapper found for endpoint: {endpoint_name}")
