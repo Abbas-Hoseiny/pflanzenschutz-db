@@ -468,3 +468,13 @@ CREATE INDEX IF NOT EXISTS idx_hinweis_kennr ON hinweis(kennr);
 CREATE INDEX IF NOT EXISTS idx_kode_kodeliste ON kode(kodeliste);
 CREATE INDEX IF NOT EXISTS idx_kultur_gruppe_gruppe ON kultur_gruppe(gruppe);
 CREATE INDEX IF NOT EXISTS idx_schadorg_gruppe_gruppe ON schadorg_gruppe(gruppe);
+
+-- =============================================================================
+-- META TABLE for build/sync tracking
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS meta (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TEXT DEFAULT (datetime('now'))
+);

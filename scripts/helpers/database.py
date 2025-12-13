@@ -213,7 +213,7 @@ class DatabaseManager:
             value: Metadata value
         """
         self.connect()
-        sql = "INSERT OR REPLACE INTO bvl_meta (key, value, updated_at) VALUES (?, ?, datetime('now'))"
+        sql = "INSERT OR REPLACE INTO meta (key, value, updated_at) VALUES (?, ?, datetime('now'))"
         self.conn.execute(sql, (key, value))
         self.conn.commit()
         
@@ -227,7 +227,7 @@ class DatabaseManager:
         Returns:
             Metadata value or None
         """
-        results = self.execute_query("SELECT value FROM bvl_meta WHERE key=?", (key,))
+        results = self.execute_query("SELECT value FROM meta WHERE key=?", (key,))
         return results[0]["value"] if results else None
         
     def vacuum(self):
