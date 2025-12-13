@@ -99,11 +99,11 @@ CREATE TABLE IF NOT EXISTS bvl_awg_wartezeit (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     awg_id TEXT,
     awg_wartezeit_nr INTEGER,
-    kultur_kode TEXT,
+    kultur TEXT,
     anwendungsbereich TEXT,
     sortier_nr INTEGER,
-    wartezeit_tage INTEGER,
-    wartezeit_text TEXT,
+    tage INTEGER,
+    bemerkung_kode TEXT,
     erlaeuterung TEXT,
     FOREIGN KEY (awg_id) REFERENCES bvl_awg(awg_id)
 );

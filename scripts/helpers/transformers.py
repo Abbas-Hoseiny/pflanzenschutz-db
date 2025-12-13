@@ -145,11 +145,11 @@ def map_awg_wartezeit_record(record: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "awg_id": record.get("awg_id"),
         "awg_wartezeit_nr": record.get("awg_wartezeit_nr"),
-        "kultur_kode": record.get("kultur"),
+        "kultur": record.get("kultur"),
         "anwendungsbereich": record.get("anwendungsbereich"),
         "sortier_nr": record.get("sortier_nr"),
-        "wartezeit_tage": record.get("gesetzt_wartezeit"),
-        "wartezeit_text": record.get("gesetzt_wartezeit_bem"),
+        "tage": record.get("gesetzt_wartezeit"),
+        "bemerkung_kode": record.get("gesetzt_wartezeit_bem"),
         "erlaeuterung": record.get("erlaeuterung")
     }
 
