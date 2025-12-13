@@ -13,15 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def calculate_sha256(file_path: str) -> str:
-    """
-    Calculate SHA256 hash of file.
-    
-    Args:
-        file_path: Path to file
-        
-    Returns:
-        Hex digest of SHA256 hash
-    """
+    """Calculate SHA256 hash of file."""
     sha256_hash = hashlib.sha256()
     with open(file_path, "rb") as f:
         for byte_block in iter(lambda: f.read(4096), b""):
@@ -40,16 +32,8 @@ def generate_manifest(
     """
     Generate manifest.json with metadata about the build.
     
-    Args:
-        db_path: Path to database file
-        output_dir: Output directory
-        compression_results: Results from compression
-        table_counts: Record counts per table
-        build_info: Build information (start_time, end_time, etc.)
-        base_url: Base URL for file downloads
-        
-    Returns:
-        Path to manifest file
+    Note: Only compressed files (.sqlite.br, .sqlite.zip) are included in manifest
+    because uncompressed .sqlite exceeds GitHub's 100MB file limit.
     """
     logger.info("Generating manifest.json")
     
@@ -69,20 +53,10 @@ def generate_manifest(
         }
     }
     
-    # Add database file info
-    db_path_obj = Path(db_path)
-    db_file_name = db_path_obj.name
+    # Skip uncompressed .sqlite file - exceeds GitHub 100MB limit
+    # App will use .sqlite.br (preferred) or .sqlite.zip (fallback)
     
-    manifest['files'].append({
-        "name": db_file_name,
-        "url": f"{base_url}/{db_file_name}",
-        "size": db_path_obj.stat().st_size,
-        "sha256": calculate_sha256(db_path),
-        "encoding": "none",
-        "type": "sqlite"
-    })
-    
-    # Add Brotli compressed file
+    # Add Brotli compressed file (preferred format)
     if 'brotli' in compression_results:
         brotli_path = Path(compression_results['brotli'])
         manifest['files'].append({
@@ -94,7 +68,7 @@ def generate_manifest(
             "type": "sqlite"
         })
     
-    # Add ZIP file
+    # Add ZIP file (fallback format)
     if 'zip' in compression_results:
         zip_path = Path(compression_results['zip'])
         manifest['files'].append({
