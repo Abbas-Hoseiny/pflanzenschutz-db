@@ -43,9 +43,9 @@ CREATE INDEX IF NOT EXISTS idx_bvl_mittel_inhaber ON bvl_mittel(zulassungsinhabe
 CREATE TABLE IF NOT EXISTS bvl_awg (
     awg_id TEXT PRIMARY KEY,
     kennr TEXT,
-    awg_titel TEXT,
     awg_nr TEXT,
-    gueltig_bis TEXT,
+    anwendungsbereich TEXT,
+    anwendungen_je_kultur INTEGER,
     payload_json TEXT,
     FOREIGN KEY (kennr) REFERENCES bvl_mittel(kennr)
 );
@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS bvl_awg_kultur (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     awg_id TEXT,
     kultur_kode TEXT,
-    kultur_text TEXT,
+    ausgenommen TEXT,
+    sortier_nr INTEGER,
     FOREIGN KEY (awg_id) REFERENCES bvl_awg(awg_id)
 );
 
@@ -69,7 +70,8 @@ CREATE TABLE IF NOT EXISTS bvl_awg_schadorg (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     awg_id TEXT,
     schadorg_kode TEXT,
-    schadorg_text TEXT,
+    ausgenommen TEXT,
+    sortier_nr INTEGER,
     FOREIGN KEY (awg_id) REFERENCES bvl_awg(awg_id)
 );
 
@@ -80,12 +82,13 @@ CREATE INDEX IF NOT EXISTS idx_bvl_awg_schadorg_kode ON bvl_awg_schadorg(schador
 CREATE TABLE IF NOT EXISTS bvl_awg_aufwand (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     awg_id TEXT,
-    aufwandmenge TEXT,
-    aufwandmenge_einheit TEXT,
-    aufwandmenge_min TEXT,
-    aufwandmenge_max TEXT,
-    wassermenge TEXT,
-    wassermenge_einheit TEXT,
+    aufwand_bedingung TEXT,
+    sortier_nr INTEGER,
+    mittel_aufwand TEXT,
+    mittel_aufwand_einheit TEXT,
+    wasser_aufwand_von TEXT,
+    wasser_aufwand_bis TEXT,
+    wasser_aufwand_einheit TEXT,
     FOREIGN KEY (awg_id) REFERENCES bvl_awg(awg_id)
 );
 
