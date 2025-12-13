@@ -1,12 +1,12 @@
-# BVL API Endpoints Configuration - ALL 40 ENDPOINTS
-# IMPORTANT: All paths must match official BVL API 1:1
-# See: https://github.com/bundesAPI/pflanzenschutzmittelzulassung-api
+# BVL API Endpoints Configuration - 25 ESSENTIAL ENDPOINTS
+# Reduced from 41 to improve build time and database size
+# Reference: https://github.com/bundesAPI/pflanzenschutzmittelzulassung-api
 
 base_url: "https://psm-api.bvl.bund.de/ords/psm/api-v1/"
 
-# =============================================================================
-# CORE ENDPOINTS (10) - Main database tables
-# =============================================================================
+# ==============================================================================
+# CORE ENDPOINTS (11) - Essential for main functionality
+# ==============================================================================
 endpoints:
   # 1. Stand - API status/date
   - name: "stand"
@@ -68,8 +68,8 @@ endpoints:
   - name: "wirkstoff_gehalt"
     path: "wirkstoff_gehalt"
     table: "bvl_wirkstoff_gehalt"
-    primary_key: ["kennr", "wirknr", "wirkvar"]
-    description: "Active substance content in products"
+    primary_key: ["kennr", "wirknr"]
+    description: "Active substance content per product"
 
   # 10. Mittel Vertrieb - Product distributors
   - name: "mittel_vertrieb"
@@ -78,223 +78,123 @@ endpoints:
     primary_key: ["kennr", "vertriebsfirma_nr"]
     description: "Product distributors"
 
-# =============================================================================
-# EXTENDED ENDPOINTS (30+) - Additional data
-# =============================================================================
-
-  # 11. Adresse - Addresses (manufacturers, distributors)
+  # 11. Adresse - Addresses
   - name: "adresse"
     path: "adresse"
     table: "bvl_adresse"
     primary_key: "adresse_nr"
     description: "Company addresses"
 
-  # 12. Antrag - Authorization applications
-  - name: "antrag"
-    path: "antrag"
-    table: "bvl_antrag"
-    primary_key: ["kennr", "antragnr"]
-    description: "Authorization applications"
+# ==============================================================================
+# GHS/HAZARD ENDPOINTS (5) - Safety information
+# ==============================================================================
 
-  # 13. Auflage Redu - Reduced requirements
-  - name: "auflage_redu"
-    path: "auflage_redu"
-    table: "bvl_auflage_redu"
-    primary_key: "auflagenr"
-    description: "Reduced application requirements"
+  # 12. GHS Gefahrenhinweise - Hazard statements (H-codes)
+  - name: "ghs_gefahrenhinweise"
+    path: "ghs_gefahrenhinweise"
+    table: "bvl_ghs_gefahrenhinweise"
+    primary_key: ["kennr", "gh_kode"]
+    description: "GHS hazard statements"
 
-  # 14. Auflagen - Application requirements
+  # 13. GHS Gefahrensymbole - Hazard symbols
+  - name: "ghs_gefahrensymbole"
+    path: "ghs_gefahrensymbole"
+    table: "bvl_ghs_gefahrensymbole"
+    primary_key: ["kennr", "gs_kode"]
+    description: "GHS hazard symbols"
+
+  # 14. GHS Sicherheitshinweise - Precautionary statements (P-codes)
+  - name: "ghs_sicherheitshinweise"
+    path: "ghs_sicherheitshinweise"
+    table: "bvl_ghs_sicherheitshinweise"
+    primary_key: ["kennr", "sh_kode"]
+    description: "GHS precautionary statements"
+
+  # 15. GHS Signalwörter - Signal words
+  - name: "ghs_signalwoerter"
+    path: "ghs_signalwoerter"
+    table: "bvl_ghs_signalwoerter"
+    primary_key: ["kennr", "sw_kode"]
+    description: "GHS signal words"
+
+  # 16. Mittel Gefahren Symbol - Product hazard symbol mapping
+  - name: "mittel_gefahren_symbol"
+    path: "mittel_gefahren_symbol"
+    table: "bvl_mittel_gefahren_symbol"
+    primary_key: ["kennr", "symbol"]
+    description: "Product to hazard symbol mapping"
+
+# ==============================================================================
+# REGULATIONS & LOOKUP ENDPOINTS (9) - Reference data
+# ==============================================================================
+
+  # 17. Auflagen - Application conditions
   - name: "auflagen"
     path: "auflagen"
     table: "bvl_auflagen"
     primary_key: ["kennr", "awg_id", "auflagenr"]
-    description: "Application requirements and conditions"
+    description: "Application conditions and restrictions"
 
-  # 15. AWG Bemerkungen - AWG remarks
-  - name: "awg_bem"
-    path: "awg_bem"
-    table: "bvl_awg_bem"
-    primary_key: ["awg_id", "sortier_nr"]
-    description: "AWG remarks and notes"
-
-  # 16. AWG Partner - Tank mix partners
-  - name: "awg_partner"
-    path: "awg_partner"
-    table: "bvl_awg_partner"
-    primary_key: ["awg_id", "kennr_partner"]
-    description: "Tank mix partners"
-
-  # 17. AWG Partner Aufwand - Partner application rates
-  - name: "awg_partner_aufwand"
-    path: "awg_partner_aufwand"
-    table: "bvl_awg_partner_aufwand"
-    primary_key: ["awg_id", "kennr_partner", "sortier_nr"]
-    description: "Partner product application rates"
-
-  # 18. AWG Verwendungszweck - Intended use
-  - name: "awg_verwendungszweck"
-    path: "awg_verwendungszweck"
-    table: "bvl_awg_verwendungszweck"
-    primary_key: ["awg_id", "verwendungszweck"]
-    description: "Intended use codes"
-
-  # 19. AWG Wartezeit Ausgenom Kultur - Waiting period exceptions
-  - name: "awg_wartezeit_ausg_kultur"
-    path: "awg_wartezeit_ausg_kultur"
-    table: "bvl_awg_wartezeit_ausg_kultur"
-    primary_key: ["awg_wartezeit_nr", "kultur"]
-    description: "Waiting period culture exceptions"
-
-  # 20. AWG Zeitpunkt - Application timing
-  - name: "awg_zeitpunkt"
-    path: "awg_zeitpunkt"
-    table: "bvl_awg_zeitpunkt"
-    primary_key: ["awg_id", "zeitpunkt"]
-    description: "Application timing codes"
-
-  # 21. AWG Zulassung - AWG authorization details
-  - name: "awg_zulassung"
-    path: "awg_zulassung"
-    table: "bvl_awg_zulassung"
-    primary_key: "awg_id"
-    description: "AWG authorization dates"
-
-  # 22. GHS Gefahrenhinweise - GHS hazard statements
-  - name: "ghs_gefahrenhinweise"
-    path: "ghs_gefahrenhinweise"
-    table: "bvl_ghs_gefahrenhinweise"
-    primary_key: ["kennr", "hinweis_kode"]
-    description: "GHS hazard statements (H-codes)"
-
-  # 23. GHS Gefahrensymbole - GHS hazard symbols
-  - name: "ghs_gefahrensymbole"
-    path: "ghs_gefahrensymbole"
-    table: "bvl_ghs_gefahrensymbole"
-    primary_key: ["kennr", "symbol_kode"]
-    description: "GHS hazard symbols (pictograms)"
-
-  # 24. GHS Sicherheitshinweise - GHS safety statements
-  - name: "ghs_sicherheitshinweise"
-    path: "ghs_sicherheitshinweise"
-    table: "bvl_ghs_sicherheitshinweise"
-    primary_key: ["kennr", "hinweis_kode"]
-    description: "GHS safety statements (P-codes)"
-
-  # 25. GHS Signalwörter - GHS signal words
-  - name: "ghs_signalwoerter"
-    path: "ghs_signalwoerter"
-    table: "bvl_ghs_signalwoerter"
-    primary_key: "kennr"
-    description: "GHS signal words"
-
-  # 26. Hinweis - Product notices
+  # 18. Hinweis - Notes/hints
   - name: "hinweis"
     path: "hinweis"
     table: "bvl_hinweis"
-    primary_key: ["kennr", "hinweis_art", "sortier_nr"]
-    description: "Product notices and hints"
+    primary_key: ["kennr", "hinweisnr"]
+    description: "Product notes and hints"
 
-  # 27. Kodeliste - Code lists
-  - name: "kodeliste"
-    path: "kodeliste"
-    table: "bvl_kodeliste"
-    primary_key: "kodeliste_nr"
-    description: "Code list definitions"
-
-  # 28. Kodeliste Feldname - Code list field names
-  - name: "kodeliste_feldname"
-    path: "kodeliste_feldname"
-    table: "bvl_kodeliste_feldname"
-    primary_key: "feld"
-    description: "Code list field mappings"
-
-  # 29. Kode - Code values (lookups)
+  # 19. Kode - Code values
   - name: "kode"
     path: "kode"
     table: "bvl_kode"
     primary_key: ["kodeliste", "kode", "sprache"]
-    description: "Code values and translations"
+    description: "Code lookup values"
 
-  # 30. Kultur Gruppe - Culture groups
+  # 20. Kodeliste - Code lists
+  - name: "kodeliste"
+    path: "kodeliste"
+    table: "bvl_kodeliste"
+    primary_key: "kodeliste"
+    description: "Code list definitions"
+
+  # 21. Kodeliste Feldname - Code list field names
+  - name: "kodeliste_feldname"
+    path: "kodeliste_feldname"
+    table: "bvl_kodeliste_feldname"
+    primary_key: ["kodeliste", "feldname"]
+    description: "Code list field mappings"
+
+  # 22. Kultur Gruppe - Culture groups
   - name: "kultur_gruppe"
     path: "kultur_gruppe"
     table: "bvl_kultur_gruppe"
     primary_key: ["gruppe", "kultur"]
-    description: "Culture groupings"
+    description: "Culture group definitions"
 
-  # 31. Mittel Abgelaufen - Expired products
-  - name: "mittel_abgelaufen"
-    path: "mittel_abgelaufen"
-    table: "bvl_mittel_abgelaufen"
-    primary_key: "kennr"
-    description: "Expired products"
-
-  # 32. Mittel Abpackung - Package sizes
-  - name: "mittel_abpackung"
-    path: "mittel_abpackung"
-    table: "bvl_mittel_abpackung"
-    primary_key: ["kennr", "sortier_nr"]
-    description: "Product package sizes"
-
-  # 33. Mittel Gefahrensymbol - Old hazard symbols
-  - name: "mittel_gefahren_symbol"
-    path: "mittel_gefahren_symbol"
-    table: "bvl_mittel_gefahren_symbol"
-    primary_key: ["kennr", "gefahren_symbol"]
-    description: "Old hazard symbols (pre-GHS)"
-
-  # 34. Mittel Wirkbereich - Product effect areas
-  - name: "mittel_wirkbereich"
-    path: "mittel_wirkbereich"
-    table: "bvl_mittel_wirkbereich"
-    primary_key: ["kennr", "wirkbereich"]
-    description: "Product effect areas"
-
-  # 35. Parallelimport Abgelaufen - Expired parallel imports
-  - name: "parallelimport_abgelaufen"
-    path: "parallelimport_abgelaufen"
-    table: "bvl_parallelimport_abgelaufen"
-    primary_key: "kennr"
-    description: "Expired parallel imports"
-
-  # 36. Parallelimport Gültig - Valid parallel imports
-  - name: "parallelimport_gueltig"
-    path: "parallelimport_gueltig"
-    table: "bvl_parallelimport_gueltig"
-    primary_key: "kennr"
-    description: "Valid parallel imports"
-
-  # 37. Schadorganismus Gruppe - Pest groups
+  # 23. Schadorg Gruppe - Pest groups
   - name: "schadorg_gruppe"
     path: "schadorg_gruppe"
     table: "bvl_schadorg_gruppe"
     primary_key: ["gruppe", "schadorg"]
-    description: "Pest organism groupings"
+    description: "Pest organism group definitions"
 
-  # 38. Stärkungsmittel - Plant strengtheners
-  - name: "staerkung"
-    path: "staerkung"
-    table: "bvl_staerkung"
-    primary_key: "kennr"
-    description: "Plant strengthening products"
+  # 24. AWG Zulassung - Approval status
+  - name: "awg_zulassung"
+    path: "awg_zulassung"
+    table: "bvl_awg_zulassung"
+    primary_key: "awg_id"
+    description: "AWG approval status"
 
-  # 39. Stärkungsmittel Vertrieb - Strengthener distributors
-  - name: "staerkung_vertrieb"
-    path: "staerkung_vertrieb"
-    table: "bvl_staerkung_vertrieb"
-    primary_key: ["kennr", "vertriebsfirma_nr"]
-    description: "Strengthener distributors"
+  # 25. Antrag - Applications
+  - name: "antrag"
+    path: "antrag"
+    table: "bvl_antrag"
+    primary_key: ["kennr", "antragnr"]
+    description: "Product applications"
 
-  # 40. Zusatzstoff - Adjuvants
-  - name: "zusatzstoff"
-    path: "zusatzstoff"
-    table: "bvl_zusatzstoff"
-    primary_key: "kennr"
-    description: "Adjuvants"
-
-  # 41. Zusatzstoff Vertrieb - Adjuvant distributors
-  - name: "zusatzstoff_vertrieb"
-    path: "zusatzstoff_vertrieb"
-    table: "bvl_zusatzstoff_vertrieb"
-    primary_key: ["kennr", "vertriebsfirma_nr"]
-    description: "Adjuvant distributors"
+# ==============================================================================
+# STATIC DATA SOURCES
+# ==============================================================================
+static_sources:
+  bio_flags:
+    file: "data/external/bio_flags.csv"
+    table: "bvl_mittel_enrichments"
