@@ -56,18 +56,20 @@ def test_map_mittel_record():
 def test_map_awg_record():
     """Test AWG record mapping."""
     raw = {
-        "awgId": "AWG-001",
+        "awg_id": "AWG-001",
         "kennr": "024123-00",
-        "awgTitel": "Test Application",
         "awgnr": "1",
-        "gueltigBis": "2025-12-31"
+        "anwendungsbereich": "FX",
+        "anwendungen_max_je_vegetation": 3
     }
     
     result = map_awg_record(raw)
     
     assert result["awg_id"] == "AWG-001"
     assert result["kennr"] == "024123-00"
-    assert result["awg_titel"] == "Test Application"
+    assert result["awg_nr"] == "1"
+    assert result["anwendungsbereich"] == "FX"
+    assert result["anwendungen_je_kultur"] == 3
 
 
 def test_map_wirkstoff_gehalt_record():
