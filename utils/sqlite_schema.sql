@@ -541,3 +541,39 @@ SELECT
     e.source
 FROM bvl_mittel m
 LEFT JOIN bvl_mittel_enrichments e ON m.kennr = e.kennr;
+
+-- ==============================================================================
+-- LEGACY COMPATIBILITY TABLES (required by validate_export.py)
+-- ==============================================================================
+
+-- Product GHS hazard statements relationship table
+CREATE TABLE IF NOT EXISTS bvl_mittel_ghs_gefahrenhinweis (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    kennr TEXT,
+    hinweis_kode TEXT,
+    hinweis_text TEXT,
+    FOREIGN KEY (kennr) REFERENCES bvl_mittel(kennr),
+    FOREIGN KEY (hinweis_kode) REFERENCES bvl_ghs_gefahrenhinweise(kode)
+);
+
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_ghs_kennr ON bvl_mittel_ghs_gefahrenhinweis(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_ghs_kode ON bvl_mittel_ghs_gefahrenhinweis(hinweis_kode);
+
+-- Distributor/manufacturer reference table
+CREATE TABLE IF NOT EXISTS bvl_vertriebsfirma (
+    firma_name TEXT PRIMARY KEY,
+    website TEXT,
+    adresse TEXT,
+    kontakt TEXT
+);
+
+-- Sync log table
+CREATE TABLE IF NOT EXISTS bvl_sync_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sync_start TEXT,
+    sync_end TEXT,
+    duration_seconds REAL,
+    status TEXT,
+    error_message TEXT,
+    records_processed INTEGER DEFAULT 0
+);
