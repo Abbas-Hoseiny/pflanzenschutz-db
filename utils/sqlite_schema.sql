@@ -9,7 +9,7 @@
 -- =============================================================================
 
 -- 1. Stand (API status/date)
-CREATE TABLE IF NOT EXISTS stand (
+CREATE TABLE IF NOT EXISTS bvl_stand (
     id INTEGER PRIMARY KEY DEFAULT 1,
     stand TEXT,
     hinweis TEXT,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS stand (
 );
 
 -- 2. Mittel (Plant protection products)
-CREATE TABLE IF NOT EXISTS mittel (
+CREATE TABLE IF NOT EXISTS bvl_mittel (
     kennr TEXT PRIMARY KEY,
     mittelname TEXT,
     formulierung_art TEXT,
@@ -29,9 +29,9 @@ CREATE TABLE IF NOT EXISTS mittel (
 );
 
 -- 3. AWG (Application areas)
-CREATE TABLE IF NOT EXISTS awg (
+CREATE TABLE IF NOT EXISTS bvl_awg (
     awg_id INTEGER PRIMARY KEY,
-    kennr TEXT REFERENCES mittel(kennr),
+    kennr TEXT REFERENCES bvl_mittel(kennr),
     antragnr TEXT,
     awgnr TEXT,
     anwendungsbereich TEXT,
@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS awg (
 );
 
 -- 4. AWG Kultur (cultures per AWG)
-CREATE TABLE IF NOT EXISTS awg_kultur (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_kultur (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     kultur TEXT,
     ausgenommen TEXT,
     sortier_nr INTEGER,
@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS awg_kultur (
 );
 
 -- 5. AWG Schadorg (pests per AWG)
-CREATE TABLE IF NOT EXISTS awg_schadorg (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_schadorg (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     schadorg TEXT,
     ausgenommen TEXT,
     sortier_nr INTEGER,
@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS awg_schadorg (
 );
 
 -- 6. AWG Aufwand (application rates)
-CREATE TABLE IF NOT EXISTS awg_aufwand (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_aufwand (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     aufwandbedingung TEXT,
     sortier_nr INTEGER,
     m_aufwand REAL,
@@ -92,9 +92,9 @@ CREATE TABLE IF NOT EXISTS awg_aufwand (
 );
 
 -- 7. AWG Wartezeit (waiting periods)
-CREATE TABLE IF NOT EXISTS awg_wartezeit (
+CREATE TABLE IF NOT EXISTS bvl_awg_wartezeit (
     awg_wartezeit_nr INTEGER PRIMARY KEY,
-    awg_id INTEGER REFERENCES awg(awg_id),
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     kultur TEXT,
     anwendungsbereich TEXT,
     gesetzt_wartezeit INTEGER,
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS awg_wartezeit (
 );
 
 -- 8. Wirkstoff (active substances)
-CREATE TABLE IF NOT EXISTS wirkstoff (
+CREATE TABLE IF NOT EXISTS bvl_wirkstoff (
     wirknr TEXT PRIMARY KEY,
     wirkstoffname TEXT,
     wirkstoffname_en TEXT,
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS wirkstoff (
 );
 
 -- 9. Wirkstoff Gehalt (active substance content)
-CREATE TABLE IF NOT EXISTS wirkstoff_gehalt (
-    kennr TEXT REFERENCES mittel(kennr),
-    wirknr TEXT REFERENCES wirkstoff(wirknr),
+CREATE TABLE IF NOT EXISTS bvl_wirkstoff_gehalt (
+    kennr TEXT REFERENCES bvl_mittel(kennr),
+    wirknr TEXT REFERENCES bvl_wirkstoff(wirknr),
     wirkvar TEXT,
     gehalt_rein REAL,
     gehalt_rein_grundstruktur REAL,
@@ -129,8 +129,8 @@ CREATE TABLE IF NOT EXISTS wirkstoff_gehalt (
 );
 
 -- 10. Mittel Vertrieb (product distributors)
-CREATE TABLE IF NOT EXISTS mittel_vertrieb (
-    kennr TEXT REFERENCES mittel(kennr),
+CREATE TABLE IF NOT EXISTS bvl_mittel_vertrieb (
+    kennr TEXT REFERENCES bvl_mittel(kennr),
     vertriebsfirma_nr INTEGER,
     PRIMARY KEY (kennr, vertriebsfirma_nr)
 );
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS mittel_vertrieb (
 -- =============================================================================
 
 -- 11. Adresse (addresses)
-CREATE TABLE IF NOT EXISTS adresse (
+CREATE TABLE IF NOT EXISTS bvl_adresse (
     adresse_nr INTEGER PRIMARY KEY,
     name TEXT,
     strasse TEXT,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS adresse (
 );
 
 -- 12. Antrag (applications)
-CREATE TABLE IF NOT EXISTS antrag (
+CREATE TABLE IF NOT EXISTS bvl_antrag (
     kennr TEXT,
     antragnr TEXT,
     antragsteller_nr INTEGER,
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS antrag (
 );
 
 -- 13. Auflage Redu (reduced requirements)
-CREATE TABLE IF NOT EXISTS auflage_redu (
+CREATE TABLE IF NOT EXISTS bvl_auflage_redu (
     auflagenr TEXT PRIMARY KEY,
     auflage TEXT,
     auflage_abstand_redu TEXT,
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS auflage_redu (
 );
 
 -- 14. Auflagen (requirements)
-CREATE TABLE IF NOT EXISTS auflagen (
+CREATE TABLE IF NOT EXISTS bvl_auflagen (
     kennr TEXT,
     antragnr TEXT,
     awg_id INTEGER,
@@ -190,8 +190,8 @@ CREATE TABLE IF NOT EXISTS auflagen (
 );
 
 -- 15. AWG Bemerkungen (AWG remarks)
-CREATE TABLE IF NOT EXISTS awg_bem (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_bem (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     bem TEXT,
     sortier_nr INTEGER,
     payload_json TEXT,
@@ -199,8 +199,8 @@ CREATE TABLE IF NOT EXISTS awg_bem (
 );
 
 -- 16. AWG Partner (tank mix partners)
-CREATE TABLE IF NOT EXISTS awg_partner (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_partner (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     kennr_partner TEXT,
     partner_typ TEXT,
     partner_bedingung TEXT,
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS awg_partner (
 );
 
 -- 17. AWG Partner Aufwand (partner rates)
-CREATE TABLE IF NOT EXISTS awg_partner_aufwand (
+CREATE TABLE IF NOT EXISTS bvl_awg_partner_aufwand (
     awg_id INTEGER,
     kennr_partner TEXT,
     aufwandbedingung TEXT,
@@ -222,8 +222,8 @@ CREATE TABLE IF NOT EXISTS awg_partner_aufwand (
 );
 
 -- 18. AWG Verwendungszweck (intended use)
-CREATE TABLE IF NOT EXISTS awg_verwendungszweck (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_verwendungszweck (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     verwendungszweck TEXT,
     sortier_nr INTEGER,
     payload_json TEXT,
@@ -231,7 +231,7 @@ CREATE TABLE IF NOT EXISTS awg_verwendungszweck (
 );
 
 -- 19. AWG Wartezeit Ausg Kultur (waiting period exceptions)
-CREATE TABLE IF NOT EXISTS awg_wartezeit_ausg_kultur (
+CREATE TABLE IF NOT EXISTS bvl_awg_wartezeit_ausg_kultur (
     awg_wartezeit_nr INTEGER,
     kultur TEXT,
     sortier_nr INTEGER,
@@ -240,8 +240,8 @@ CREATE TABLE IF NOT EXISTS awg_wartezeit_ausg_kultur (
 );
 
 -- 20. AWG Zeitpunkt (application timing)
-CREATE TABLE IF NOT EXISTS awg_zeitpunkt (
-    awg_id INTEGER REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_zeitpunkt (
+    awg_id INTEGER REFERENCES bvl_awg(awg_id),
     zeitpunkt TEXT,
     sortier_nr INTEGER,
     payload_json TEXT,
@@ -249,8 +249,8 @@ CREATE TABLE IF NOT EXISTS awg_zeitpunkt (
 );
 
 -- 21. AWG Zulassung (AWG authorization)
-CREATE TABLE IF NOT EXISTS awg_zulassung (
-    awg_id INTEGER PRIMARY KEY REFERENCES awg(awg_id),
+CREATE TABLE IF NOT EXISTS bvl_awg_zulassung (
+    awg_id INTEGER PRIMARY KEY REFERENCES bvl_awg(awg_id),
     zulassungsanfang TEXT,
     zulassungsende TEXT,
     aufbrauchfrist TEXT,
@@ -258,7 +258,7 @@ CREATE TABLE IF NOT EXISTS awg_zulassung (
 );
 
 -- 22. GHS Gefahrenhinweise (hazard statements)
-CREATE TABLE IF NOT EXISTS ghs_gefahrenhinweise (
+CREATE TABLE IF NOT EXISTS bvl_ghs_gefahrenhinweise (
     kennr TEXT,
     hinweis_kode TEXT,
     hinweis_text TEXT,
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS ghs_gefahrenhinweise (
 );
 
 -- 23. GHS Gefahrensymbole (hazard symbols)
-CREATE TABLE IF NOT EXISTS ghs_gefahrensymbole (
+CREATE TABLE IF NOT EXISTS bvl_ghs_gefahrensymbole (
     kennr TEXT,
     symbol_kode TEXT,
     symbol_text TEXT,
@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS ghs_gefahrensymbole (
 );
 
 -- 24. GHS Sicherheitshinweise (safety statements)
-CREATE TABLE IF NOT EXISTS ghs_sicherheitshinweise (
+CREATE TABLE IF NOT EXISTS bvl_ghs_sicherheitshinweise (
     kennr TEXT,
     hinweis_kode TEXT,
     hinweis_text TEXT,
@@ -288,14 +288,14 @@ CREATE TABLE IF NOT EXISTS ghs_sicherheitshinweise (
 );
 
 -- 25. GHS Signalwörter (signal words)
-CREATE TABLE IF NOT EXISTS ghs_signalwoerter (
+CREATE TABLE IF NOT EXISTS bvl_ghs_signalwoerter (
     kennr TEXT PRIMARY KEY,
     signalwort TEXT,
     payload_json TEXT
 );
 
 -- 26. Hinweis (notices)
-CREATE TABLE IF NOT EXISTS hinweis (
+CREATE TABLE IF NOT EXISTS bvl_hinweis (
     kennr TEXT,
     hinweis_art TEXT,
     hinweis TEXT,
@@ -305,7 +305,7 @@ CREATE TABLE IF NOT EXISTS hinweis (
 );
 
 -- 27. Kodeliste (code lists)
-CREATE TABLE IF NOT EXISTS kodeliste (
+CREATE TABLE IF NOT EXISTS bvl_kodeliste (
     kodeliste_nr INTEGER PRIMARY KEY,
     kodeliste_name TEXT,
     kodeliste_bem TEXT,
@@ -313,14 +313,14 @@ CREATE TABLE IF NOT EXISTS kodeliste (
 );
 
 -- 28. Kodeliste Feldname (field names)
-CREATE TABLE IF NOT EXISTS kodeliste_feldname (
+CREATE TABLE IF NOT EXISTS bvl_kodeliste_feldname (
     feld TEXT PRIMARY KEY,
     kodeliste_nr INTEGER,
     payload_json TEXT
 );
 
 -- 29. Kode (code values/lookups)
-CREATE TABLE IF NOT EXISTS kode (
+CREATE TABLE IF NOT EXISTS bvl_kode (
     kodeliste INTEGER,
     kode TEXT,
     sprache TEXT,
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS kode (
 );
 
 -- 30. Kultur Gruppe (culture groups)
-CREATE TABLE IF NOT EXISTS kultur_gruppe (
+CREATE TABLE IF NOT EXISTS bvl_kultur_gruppe (
     gruppe TEXT,
     kultur TEXT,
     sortier_nr INTEGER,
@@ -340,7 +340,7 @@ CREATE TABLE IF NOT EXISTS kultur_gruppe (
 );
 
 -- 31. Mittel Abgelaufen (expired products)
-CREATE TABLE IF NOT EXISTS mittel_abgelaufen (
+CREATE TABLE IF NOT EXISTS bvl_mittel_abgelaufen (
     kennr TEXT PRIMARY KEY,
     mittelname TEXT,
     zul_ende TEXT,
@@ -349,7 +349,7 @@ CREATE TABLE IF NOT EXISTS mittel_abgelaufen (
 );
 
 -- 32. Mittel Abpackung (package sizes)
-CREATE TABLE IF NOT EXISTS mittel_abpackung (
+CREATE TABLE IF NOT EXISTS bvl_mittel_abpackung (
     kennr TEXT,
     abpackung_menge REAL,
     abpackung_einheit TEXT,
@@ -359,7 +359,7 @@ CREATE TABLE IF NOT EXISTS mittel_abpackung (
 );
 
 -- 33. Mittel Gefahrensymbol (old hazard symbols)
-CREATE TABLE IF NOT EXISTS mittel_gefahren_symbol (
+CREATE TABLE IF NOT EXISTS bvl_mittel_gefahren_symbol (
     kennr TEXT,
     gefahren_symbol TEXT,
     sortier_nr INTEGER,
@@ -368,7 +368,7 @@ CREATE TABLE IF NOT EXISTS mittel_gefahren_symbol (
 );
 
 -- 34. Mittel Wirkbereich (effect areas)
-CREATE TABLE IF NOT EXISTS mittel_wirkbereich (
+CREATE TABLE IF NOT EXISTS bvl_mittel_wirkbereich (
     kennr TEXT,
     wirkbereich TEXT,
     sortier_nr INTEGER,
@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS mittel_wirkbereich (
 );
 
 -- 35. Parallelimport Abgelaufen (expired parallel imports)
-CREATE TABLE IF NOT EXISTS parallelimport_abgelaufen (
+CREATE TABLE IF NOT EXISTS bvl_parallelimport_abgelaufen (
     kennr TEXT PRIMARY KEY,
     parallelimport_kennr TEXT,
     referenzmittel_kennr TEXT,
@@ -386,7 +386,7 @@ CREATE TABLE IF NOT EXISTS parallelimport_abgelaufen (
 );
 
 -- 36. Parallelimport Gültig (valid parallel imports)
-CREATE TABLE IF NOT EXISTS parallelimport_gueltig (
+CREATE TABLE IF NOT EXISTS bvl_parallelimport_gueltig (
     kennr TEXT PRIMARY KEY,
     parallelimport_kennr TEXT,
     referenzmittel_kennr TEXT,
@@ -395,7 +395,7 @@ CREATE TABLE IF NOT EXISTS parallelimport_gueltig (
 );
 
 -- 37. Schadorg Gruppe (pest groups)
-CREATE TABLE IF NOT EXISTS schadorg_gruppe (
+CREATE TABLE IF NOT EXISTS bvl_schadorg_gruppe (
     gruppe TEXT,
     schadorg TEXT,
     sortier_nr INTEGER,
@@ -404,7 +404,7 @@ CREATE TABLE IF NOT EXISTS schadorg_gruppe (
 );
 
 -- 38. Stärkungsmittel (plant strengtheners)
-CREATE TABLE IF NOT EXISTS staerkung (
+CREATE TABLE IF NOT EXISTS bvl_staerkung (
     kennr TEXT PRIMARY KEY,
     mittelname TEXT,
     antragsteller_nr INTEGER,
@@ -413,7 +413,7 @@ CREATE TABLE IF NOT EXISTS staerkung (
 );
 
 -- 39. Stärkungsmittel Vertrieb (strengthener distributors)
-CREATE TABLE IF NOT EXISTS staerkung_vertrieb (
+CREATE TABLE IF NOT EXISTS bvl_staerkung_vertrieb (
     kennr TEXT,
     vertriebsfirma_nr INTEGER,
     payload_json TEXT,
@@ -421,7 +421,7 @@ CREATE TABLE IF NOT EXISTS staerkung_vertrieb (
 );
 
 -- 40. Zusatzstoff (adjuvants)
-CREATE TABLE IF NOT EXISTS zusatzstoff (
+CREATE TABLE IF NOT EXISTS bvl_zusatzstoff (
     kennr TEXT PRIMARY KEY,
     mittelname TEXT,
     antragsteller_nr INTEGER,
@@ -430,7 +430,7 @@ CREATE TABLE IF NOT EXISTS zusatzstoff (
 );
 
 -- 41. Zusatzstoff Vertrieb (adjuvant distributors)
-CREATE TABLE IF NOT EXISTS zusatzstoff_vertrieb (
+CREATE TABLE IF NOT EXISTS bvl_zusatzstoff_vertrieb (
     kennr TEXT,
     vertriebsfirma_nr INTEGER,
     payload_json TEXT,
@@ -442,38 +442,38 @@ CREATE TABLE IF NOT EXISTS zusatzstoff_vertrieb (
 -- =============================================================================
 
 -- Core indexes
-CREATE INDEX IF NOT EXISTS idx_awg_kennr ON awg(kennr);
-CREATE INDEX IF NOT EXISTS idx_awg_kultur_awg_id ON awg_kultur(awg_id);
-CREATE INDEX IF NOT EXISTS idx_awg_kultur_kultur ON awg_kultur(kultur);
-CREATE INDEX IF NOT EXISTS idx_awg_schadorg_awg_id ON awg_schadorg(awg_id);
-CREATE INDEX IF NOT EXISTS idx_awg_schadorg_schadorg ON awg_schadorg(schadorg);
-CREATE INDEX IF NOT EXISTS idx_awg_aufwand_awg_id ON awg_aufwand(awg_id);
-CREATE INDEX IF NOT EXISTS idx_awg_wartezeit_awg_id ON awg_wartezeit(awg_id);
-CREATE INDEX IF NOT EXISTS idx_wirkstoff_gehalt_kennr ON wirkstoff_gehalt(kennr);
-CREATE INDEX IF NOT EXISTS idx_wirkstoff_gehalt_wirknr ON wirkstoff_gehalt(wirknr);
-CREATE INDEX IF NOT EXISTS idx_mittel_vertrieb_kennr ON mittel_vertrieb(kennr);
-CREATE INDEX IF NOT EXISTS idx_mittel_zul_ende ON mittel(zul_ende);
-CREATE INDEX IF NOT EXISTS idx_mittel_mittelname ON mittel(mittelname);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_kennr ON bvl_awg(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_kultur_awg_id ON bvl_awg_kultur(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_kultur_kultur ON bvl_awg_kultur(kultur);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_schadorg_awg_id ON bvl_awg_schadorg(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_schadorg_schadorg ON bvl_awg_schadorg(schadorg);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_aufwand_awg_id ON bvl_awg_aufwand(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_wartezeit_awg_id ON bvl_awg_wartezeit(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_wirkstoff_gehalt_kennr ON bvl_wirkstoff_gehalt(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_wirkstoff_gehalt_wirknr ON bvl_wirkstoff_gehalt(wirknr);
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_vertrieb_kennr ON bvl_mittel_vertrieb(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_zul_ende ON bvl_mittel(zul_ende);
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_mittelname ON bvl_mittel(mittelname);
 
 -- Extended indexes
-CREATE INDEX IF NOT EXISTS idx_antrag_kennr ON antrag(kennr);
-CREATE INDEX IF NOT EXISTS idx_auflagen_kennr ON auflagen(kennr);
-CREATE INDEX IF NOT EXISTS idx_auflagen_awg_id ON auflagen(awg_id);
-CREATE INDEX IF NOT EXISTS idx_awg_bem_awg_id ON awg_bem(awg_id);
-CREATE INDEX IF NOT EXISTS idx_awg_partner_awg_id ON awg_partner(awg_id);
-CREATE INDEX IF NOT EXISTS idx_ghs_gefahrenhinweise_kennr ON ghs_gefahrenhinweise(kennr);
-CREATE INDEX IF NOT EXISTS idx_ghs_gefahrensymbole_kennr ON ghs_gefahrensymbole(kennr);
-CREATE INDEX IF NOT EXISTS idx_ghs_sicherheitshinweise_kennr ON ghs_sicherheitshinweise(kennr);
-CREATE INDEX IF NOT EXISTS idx_hinweis_kennr ON hinweis(kennr);
-CREATE INDEX IF NOT EXISTS idx_kode_kodeliste ON kode(kodeliste);
-CREATE INDEX IF NOT EXISTS idx_kultur_gruppe_gruppe ON kultur_gruppe(gruppe);
-CREATE INDEX IF NOT EXISTS idx_schadorg_gruppe_gruppe ON schadorg_gruppe(gruppe);
+CREATE INDEX IF NOT EXISTS idx_bvl_antrag_kennr ON bvl_antrag(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_auflagen_kennr ON bvl_auflagen(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_auflagen_awg_id ON bvl_auflagen(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_bem_awg_id ON bvl_awg_bem(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_awg_partner_awg_id ON bvl_awg_partner(awg_id);
+CREATE INDEX IF NOT EXISTS idx_bvl_ghs_gefahrenhinweise_kennr ON bvl_ghs_gefahrenhinweise(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_ghs_gefahrensymbole_kennr ON bvl_ghs_gefahrensymbole(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_ghs_sicherheitshinweise_kennr ON bvl_ghs_sicherheitshinweise(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_hinweis_kennr ON bvl_hinweis(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_kode_kodeliste ON bvl_kode(kodeliste);
+CREATE INDEX IF NOT EXISTS idx_bvl_kultur_gruppe_gruppe ON bvl_kultur_gruppe(gruppe);
+CREATE INDEX IF NOT EXISTS idx_bvl_schadorg_gruppe_gruppe ON bvl_schadorg_gruppe(gruppe);
 
 -- =============================================================================
 -- META TABLE for build/sync tracking
 -- =============================================================================
 
-CREATE TABLE IF NOT EXISTS meta (
+CREATE TABLE IF NOT EXISTS bvl_meta (
     key TEXT PRIMARY KEY,
     value TEXT,
     updated_at TEXT DEFAULT (datetime('now'))

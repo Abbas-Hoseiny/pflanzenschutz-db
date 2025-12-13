@@ -1,6 +1,6 @@
 """
 Unit tests for database operations.
-Note: Table names match official BVL API (no bvl_ prefix)
+All table names have bvl_ prefix to match pflanzenschutz-db schema.
 """
 
 import pytest
@@ -34,18 +34,18 @@ def test_init_schema(temp_db):
     manager = DatabaseManager(temp_db)
     manager.init_schema('utils/sqlite_schema.sql')
     
-    # Check core tables exist (no bvl_ prefix - matches official API)
-    assert manager.table_exists('mittel')
-    assert manager.table_exists('awg')
-    assert manager.table_exists('awg_kultur')
-    assert manager.table_exists('awg_aufwand')
-    assert manager.table_exists('awg_wartezeit')
-    assert manager.table_exists('wirkstoff')
-    assert manager.table_exists('meta')
+    # Check core tables exist (with bvl_ prefix)
+    assert manager.table_exists('bvl_mittel')
+    assert manager.table_exists('bvl_awg')
+    assert manager.table_exists('bvl_awg_kultur')
+    assert manager.table_exists('bvl_awg_aufwand')
+    assert manager.table_exists('bvl_awg_wartezeit')
+    assert manager.table_exists('bvl_wirkstoff')
+    assert manager.table_exists('bvl_meta')
     
     # Check extended tables
-    assert manager.table_exists('ghs_gefahrenhinweise')
-    assert manager.table_exists('adresse')
+    assert manager.table_exists('bvl_ghs_gefahrenhinweise')
+    assert manager.table_exists('bvl_adresse')
 
 
 def test_insert_record(db_manager):
@@ -57,11 +57,11 @@ def test_insert_record(db_manager):
         'zul_ende': '2025-12-31'
     }
     
-    success = db_manager.insert_record('mittel', record)
+    success = db_manager.insert_record('bvl_mittel', record)
     assert success
     
     # Verify record was inserted
-    count = db_manager.get_table_count('mittel')
+    count = db_manager.get_table_count('bvl_mittel')
     assert count == 1
 
 
@@ -73,25 +73,25 @@ def test_insert_records(db_manager):
         {'kennr': '024123-02', 'mittelname': 'Product 3'}
     ]
     
-    count = db_manager.insert_records('mittel', records)
+    count = db_manager.insert_records('bvl_mittel', records)
     assert count == 3
     
     # Verify records were inserted
-    total = db_manager.get_table_count('mittel')
+    total = db_manager.get_table_count('bvl_mittel')
     assert total == 3
 
 
 def test_execute_query(db_manager):
     """Test executing SELECT query."""
     # Insert test data
-    db_manager.insert_record('mittel', {
+    db_manager.insert_record('bvl_mittel', {
         'kennr': '024123-00',
         'mittelname': 'Test Product'
     })
     
     # Query data
     results = db_manager.execute_query(
-        "SELECT * FROM mittel WHERE kennr = ?",
+        "SELECT * FROM bvl_mittel WHERE kennr = ?",
         ('024123-00',)
     )
     
@@ -113,14 +113,14 @@ def test_set_and_get_meta(db_manager):
 
 def test_table_count(db_manager):
     """Test getting table record count."""
-    assert db_manager.get_table_count('mittel') == 0
+    assert db_manager.get_table_count('bvl_mittel') == 0
     
-    db_manager.insert_record('mittel', {
+    db_manager.insert_record('bvl_mittel', {
         'kennr': '024123-00',
         'mittelname': 'Test'
     })
     
-    assert db_manager.get_table_count('mittel') == 1
+    assert db_manager.get_table_count('bvl_mittel') == 1
 
 
 def test_context_manager(temp_db):
@@ -129,7 +129,7 @@ def test_context_manager(temp_db):
     manager.init_schema('utils/sqlite_schema.sql')
     
     with manager as db:
-        db.insert_record('mittel', {
+        db.insert_record('bvl_mittel', {
             'kennr': '024123-00',
             'mittelname': 'Test'
         })
@@ -139,7 +139,7 @@ def test_context_manager(temp_db):
 
 
 def test_awg_aufwand_official_fields(db_manager):
-    """Test that awg_aufwand uses official API field names."""
+    """Test that bvl_awg_aufwand uses official API field names."""
     record = {
         'awg_id': 12345,
         'aufwandbedingung': 'AB',
@@ -151,15 +151,15 @@ def test_awg_aufwand_official_fields(db_manager):
         'w_aufwand_einheit': 'L_HA'
     }
     
-    success = db_manager.insert_record('awg_aufwand', record)
+    success = db_manager.insert_record('bvl_awg_aufwand', record)
     assert success
     
-    results = db_manager.execute_query("SELECT m_aufwand FROM awg_aufwand WHERE awg_id = 12345")
+    results = db_manager.execute_query("SELECT m_aufwand FROM bvl_awg_aufwand WHERE awg_id = 12345")
     assert results[0]['m_aufwand'] == 1.5
 
 
 def test_awg_wartezeit_official_fields(db_manager):
-    """Test that awg_wartezeit uses official API field names."""
+    """Test that bvl_awg_wartezeit uses official API field names."""
     record = {
         'awg_wartezeit_nr': 99999,
         'awg_id': 12345,
@@ -171,8 +171,8 @@ def test_awg_wartezeit_official_fields(db_manager):
         'sortier_nr': 1
     }
     
-    success = db_manager.insert_record('awg_wartezeit', record)
+    success = db_manager.insert_record('bvl_awg_wartezeit', record)
     assert success
     
-    results = db_manager.execute_query("SELECT gesetzt_wartezeit FROM awg_wartezeit WHERE awg_wartezeit_nr = 99999")
+    results = db_manager.execute_query("SELECT gesetzt_wartezeit FROM bvl_awg_wartezeit WHERE awg_wartezeit_nr = 99999")
     assert results[0]['gesetzt_wartezeit'] == 35

@@ -11,70 +11,70 @@ endpoints:
   # 1. Stand - API status/date
   - name: "stand"
     path: "stand"
-    table: "stand"
+    table: "bvl_stand"
     primary_key: "id"
     description: "API status and data date"
 
   # 2. Mittel - Plant protection products
   - name: "mittel"
     path: "mittel"
-    table: "mittel"
+    table: "bvl_mittel"
     primary_key: "kennr"
     description: "Plant protection products"
 
   # 3. AWG - Application areas
   - name: "awg"
     path: "awg"
-    table: "awg"
+    table: "bvl_awg"
     primary_key: "awg_id"
     description: "Application areas"
 
   # 4. AWG Kultur - Cultures per AWG
   - name: "awg_kultur"
     path: "awg_kultur"
-    table: "awg_kultur"
+    table: "bvl_awg_kultur"
     primary_key: ["awg_id", "kultur"]
     description: "Cultures for application areas"
 
   # 5. AWG Schadorganismus - Pests per AWG
   - name: "awg_schadorg"
     path: "awg_schadorg"
-    table: "awg_schadorg"
+    table: "bvl_awg_schadorg"
     primary_key: ["awg_id", "schadorg"]
     description: "Pest organisms for application areas"
 
   # 6. AWG Aufwand - Application rates
   - name: "awg_aufwand"
     path: "awg_aufwand"
-    table: "awg_aufwand"
+    table: "bvl_awg_aufwand"
     primary_key: ["awg_id", "sortier_nr"]
     description: "Application rates"
 
   # 7. AWG Wartezeit - Waiting periods
   - name: "awg_wartezeit"
     path: "awg_wartezeit"
-    table: "awg_wartezeit"
+    table: "bvl_awg_wartezeit"
     primary_key: "awg_wartezeit_nr"
     description: "Waiting periods"
 
   # 8. Wirkstoff - Active substances
   - name: "wirkstoff"
     path: "wirkstoff"
-    table: "wirkstoff"
+    table: "bvl_wirkstoff"
     primary_key: "wirknr"
     description: "Active substances"
 
   # 9. Wirkstoff Gehalt - Active substance content
   - name: "wirkstoff_gehalt"
     path: "wirkstoff_gehalt"
-    table: "wirkstoff_gehalt"
+    table: "bvl_wirkstoff_gehalt"
     primary_key: ["kennr", "wirknr", "wirkvar"]
     description: "Active substance content in products"
 
   # 10. Mittel Vertrieb - Product distributors
   - name: "mittel_vertrieb"
     path: "mittel_vertrieb"
-    table: "mittel_vertrieb"
+    table: "bvl_mittel_vertrieb"
     primary_key: ["kennr", "vertriebsfirma_nr"]
     description: "Product distributors"
 
@@ -85,216 +85,216 @@ endpoints:
   # 11. Adresse - Addresses (manufacturers, distributors)
   - name: "adresse"
     path: "adresse"
-    table: "adresse"
+    table: "bvl_adresse"
     primary_key: "adresse_nr"
     description: "Company addresses"
 
   # 12. Antrag - Authorization applications
   - name: "antrag"
     path: "antrag"
-    table: "antrag"
+    table: "bvl_antrag"
     primary_key: ["kennr", "antragnr"]
     description: "Authorization applications"
 
   # 13. Auflage Redu - Reduced requirements
   - name: "auflage_redu"
     path: "auflage_redu"
-    table: "auflage_redu"
+    table: "bvl_auflage_redu"
     primary_key: "auflagenr"
     description: "Reduced application requirements"
 
   # 14. Auflagen - Application requirements
   - name: "auflagen"
     path: "auflagen"
-    table: "auflagen"
+    table: "bvl_auflagen"
     primary_key: ["kennr", "awg_id", "auflagenr"]
     description: "Application requirements and conditions"
 
   # 15. AWG Bemerkungen - AWG remarks
   - name: "awg_bem"
     path: "awg_bem"
-    table: "awg_bem"
+    table: "bvl_awg_bem"
     primary_key: ["awg_id", "sortier_nr"]
     description: "AWG remarks and notes"
 
   # 16. AWG Partner - Tank mix partners
   - name: "awg_partner"
     path: "awg_partner"
-    table: "awg_partner"
+    table: "bvl_awg_partner"
     primary_key: ["awg_id", "kennr_partner"]
     description: "Tank mix partners"
 
   # 17. AWG Partner Aufwand - Partner application rates
   - name: "awg_partner_aufwand"
     path: "awg_partner_aufwand"
-    table: "awg_partner_aufwand"
+    table: "bvl_awg_partner_aufwand"
     primary_key: ["awg_id", "kennr_partner", "sortier_nr"]
     description: "Partner product application rates"
 
   # 18. AWG Verwendungszweck - Intended use
   - name: "awg_verwendungszweck"
     path: "awg_verwendungszweck"
-    table: "awg_verwendungszweck"
+    table: "bvl_awg_verwendungszweck"
     primary_key: ["awg_id", "verwendungszweck"]
     description: "Intended use codes"
 
   # 19. AWG Wartezeit Ausgenom Kultur - Waiting period exceptions
   - name: "awg_wartezeit_ausg_kultur"
     path: "awg_wartezeit_ausg_kultur"
-    table: "awg_wartezeit_ausg_kultur"
+    table: "bvl_awg_wartezeit_ausg_kultur"
     primary_key: ["awg_wartezeit_nr", "kultur"]
     description: "Waiting period culture exceptions"
 
   # 20. AWG Zeitpunkt - Application timing
   - name: "awg_zeitpunkt"
     path: "awg_zeitpunkt"
-    table: "awg_zeitpunkt"
+    table: "bvl_awg_zeitpunkt"
     primary_key: ["awg_id", "zeitpunkt"]
     description: "Application timing codes"
 
   # 21. AWG Zulassung - AWG authorization details
   - name: "awg_zulassung"
     path: "awg_zulassung"
-    table: "awg_zulassung"
+    table: "bvl_awg_zulassung"
     primary_key: "awg_id"
     description: "AWG authorization dates"
 
   # 22. GHS Gefahrenhinweise - GHS hazard statements
   - name: "ghs_gefahrenhinweise"
     path: "ghs_gefahrenhinweise"
-    table: "ghs_gefahrenhinweise"
+    table: "bvl_ghs_gefahrenhinweise"
     primary_key: ["kennr", "hinweis_kode"]
     description: "GHS hazard statements (H-codes)"
 
   # 23. GHS Gefahrensymbole - GHS hazard symbols
   - name: "ghs_gefahrensymbole"
     path: "ghs_gefahrensymbole"
-    table: "ghs_gefahrensymbole"
+    table: "bvl_ghs_gefahrensymbole"
     primary_key: ["kennr", "symbol_kode"]
     description: "GHS hazard symbols (pictograms)"
 
   # 24. GHS Sicherheitshinweise - GHS safety statements
   - name: "ghs_sicherheitshinweise"
     path: "ghs_sicherheitshinweise"
-    table: "ghs_sicherheitshinweise"
+    table: "bvl_ghs_sicherheitshinweise"
     primary_key: ["kennr", "hinweis_kode"]
     description: "GHS safety statements (P-codes)"
 
   # 25. GHS Signalwörter - GHS signal words
   - name: "ghs_signalwoerter"
     path: "ghs_signalwoerter"
-    table: "ghs_signalwoerter"
+    table: "bvl_ghs_signalwoerter"
     primary_key: "kennr"
     description: "GHS signal words"
 
   # 26. Hinweis - Product notices
   - name: "hinweis"
     path: "hinweis"
-    table: "hinweis"
+    table: "bvl_hinweis"
     primary_key: ["kennr", "hinweis_art", "sortier_nr"]
     description: "Product notices and hints"
 
   # 27. Kodeliste - Code lists
   - name: "kodeliste"
     path: "kodeliste"
-    table: "kodeliste"
+    table: "bvl_kodeliste"
     primary_key: "kodeliste_nr"
     description: "Code list definitions"
 
   # 28. Kodeliste Feldname - Code list field names
   - name: "kodeliste_feldname"
     path: "kodeliste_feldname"
-    table: "kodeliste_feldname"
+    table: "bvl_kodeliste_feldname"
     primary_key: "feld"
     description: "Code list field mappings"
 
   # 29. Kode - Code values (lookups)
   - name: "kode"
     path: "kode"
-    table: "kode"
+    table: "bvl_kode"
     primary_key: ["kodeliste", "kode", "sprache"]
     description: "Code values and translations"
 
   # 30. Kultur Gruppe - Culture groups
   - name: "kultur_gruppe"
     path: "kultur_gruppe"
-    table: "kultur_gruppe"
+    table: "bvl_kultur_gruppe"
     primary_key: ["gruppe", "kultur"]
     description: "Culture groupings"
 
   # 31. Mittel Abgelaufen - Expired products
   - name: "mittel_abgelaufen"
     path: "mittel_abgelaufen"
-    table: "mittel_abgelaufen"
+    table: "bvl_mittel_abgelaufen"
     primary_key: "kennr"
     description: "Expired products"
 
   # 32. Mittel Abpackung - Package sizes
   - name: "mittel_abpackung"
     path: "mittel_abpackung"
-    table: "mittel_abpackung"
+    table: "bvl_mittel_abpackung"
     primary_key: ["kennr", "sortier_nr"]
     description: "Product package sizes"
 
   # 33. Mittel Gefahrensymbol - Old hazard symbols
   - name: "mittel_gefahren_symbol"
     path: "mittel_gefahren_symbol"
-    table: "mittel_gefahren_symbol"
+    table: "bvl_mittel_gefahren_symbol"
     primary_key: ["kennr", "gefahren_symbol"]
     description: "Old hazard symbols (pre-GHS)"
 
   # 34. Mittel Wirkbereich - Product effect areas
   - name: "mittel_wirkbereich"
     path: "mittel_wirkbereich"
-    table: "mittel_wirkbereich"
+    table: "bvl_mittel_wirkbereich"
     primary_key: ["kennr", "wirkbereich"]
     description: "Product effect areas"
 
   # 35. Parallelimport Abgelaufen - Expired parallel imports
   - name: "parallelimport_abgelaufen"
     path: "parallelimport_abgelaufen"
-    table: "parallelimport_abgelaufen"
+    table: "bvl_parallelimport_abgelaufen"
     primary_key: "kennr"
     description: "Expired parallel imports"
 
   # 36. Parallelimport Gültig - Valid parallel imports
   - name: "parallelimport_gueltig"
     path: "parallelimport_gueltig"
-    table: "parallelimport_gueltig"
+    table: "bvl_parallelimport_gueltig"
     primary_key: "kennr"
     description: "Valid parallel imports"
 
   # 37. Schadorganismus Gruppe - Pest groups
   - name: "schadorg_gruppe"
     path: "schadorg_gruppe"
-    table: "schadorg_gruppe"
+    table: "bvl_schadorg_gruppe"
     primary_key: ["gruppe", "schadorg"]
     description: "Pest organism groupings"
 
   # 38. Stärkungsmittel - Plant strengtheners
   - name: "staerkung"
     path: "staerkung"
-    table: "staerkung"
+    table: "bvl_staerkung"
     primary_key: "kennr"
     description: "Plant strengthening products"
 
   # 39. Stärkungsmittel Vertrieb - Strengthener distributors
   - name: "staerkung_vertrieb"
     path: "staerkung_vertrieb"
-    table: "staerkung_vertrieb"
+    table: "bvl_staerkung_vertrieb"
     primary_key: ["kennr", "vertriebsfirma_nr"]
     description: "Strengthener distributors"
 
   # 40. Zusatzstoff - Adjuvants
   - name: "zusatzstoff"
     path: "zusatzstoff"
-    table: "zusatzstoff"
+    table: "bvl_zusatzstoff"
     primary_key: "kennr"
     description: "Adjuvants"
 
   # 41. Zusatzstoff Vertrieb - Adjuvant distributors
   - name: "zusatzstoff_vertrieb"
     path: "zusatzstoff_vertrieb"
-    table: "zusatzstoff_vertrieb"
+    table: "bvl_zusatzstoff_vertrieb"
     primary_key: ["kennr", "vertriebsfirma_nr"]
     description: "Adjuvant distributors"
