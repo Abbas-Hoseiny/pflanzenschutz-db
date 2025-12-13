@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS bvl_mittel (
 
 -- 3. AWG (Application areas)
 CREATE TABLE IF NOT EXISTS bvl_awg (
-    awg_id INTEGER PRIMARY KEY,
+    awg_id TEXT PRIMARY KEY,
     kennr TEXT REFERENCES bvl_mittel(kennr),
     antragnr TEXT,
     awgnr TEXT,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg (
 
 -- 4. AWG Kultur (cultures per AWG)
 CREATE TABLE IF NOT EXISTS bvl_awg_kultur (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     kultur TEXT,
     ausgenommen TEXT,
     sortier_nr INTEGER,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_kultur (
 
 -- 5. AWG Schadorg (pests per AWG)
 CREATE TABLE IF NOT EXISTS bvl_awg_schadorg (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     schadorg TEXT,
     ausgenommen TEXT,
     sortier_nr INTEGER,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_schadorg (
 
 -- 6. AWG Aufwand (application rates)
 CREATE TABLE IF NOT EXISTS bvl_awg_aufwand (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     aufwandbedingung TEXT,
     sortier_nr INTEGER,
     m_aufwand REAL,
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_aufwand (
 -- 7. AWG Wartezeit (waiting periods)
 CREATE TABLE IF NOT EXISTS bvl_awg_wartezeit (
     awg_wartezeit_nr INTEGER PRIMARY KEY,
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     kultur TEXT,
     anwendungsbereich TEXT,
     gesetzt_wartezeit INTEGER,
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS bvl_auflage_redu (
 CREATE TABLE IF NOT EXISTS bvl_auflagen (
     kennr TEXT,
     antragnr TEXT,
-    awg_id INTEGER,
+    awg_id TEXT,
     ebene TEXT,
     auflagenr TEXT,
     auflage TEXT,
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS bvl_auflagen (
 
 -- 15. AWG Bemerkungen (AWG remarks)
 CREATE TABLE IF NOT EXISTS bvl_awg_bem (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     bem TEXT,
     sortier_nr INTEGER,
     payload_json TEXT,
@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_bem (
 
 -- 16. AWG Partner (tank mix partners)
 CREATE TABLE IF NOT EXISTS bvl_awg_partner (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     kennr_partner TEXT,
     partner_typ TEXT,
     partner_bedingung TEXT,
@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_partner (
 
 -- 17. AWG Partner Aufwand (partner rates)
 CREATE TABLE IF NOT EXISTS bvl_awg_partner_aufwand (
-    awg_id INTEGER,
+    awg_id TEXT,
     kennr_partner TEXT,
     aufwandbedingung TEXT,
     sortier_nr INTEGER,
@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_partner_aufwand (
 
 -- 18. AWG Verwendungszweck (intended use)
 CREATE TABLE IF NOT EXISTS bvl_awg_verwendungszweck (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     verwendungszweck TEXT,
     sortier_nr INTEGER,
     payload_json TEXT,
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_wartezeit_ausg_kultur (
 
 -- 20. AWG Zeitpunkt (application timing)
 CREATE TABLE IF NOT EXISTS bvl_awg_zeitpunkt (
-    awg_id INTEGER REFERENCES bvl_awg(awg_id),
+    awg_id TEXT REFERENCES bvl_awg(awg_id),
     zeitpunkt TEXT,
     sortier_nr INTEGER,
     payload_json TEXT,
@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS bvl_awg_zeitpunkt (
 
 -- 21. AWG Zulassung (AWG authorization)
 CREATE TABLE IF NOT EXISTS bvl_awg_zulassung (
-    awg_id INTEGER PRIMARY KEY REFERENCES bvl_awg(awg_id),
+    awg_id TEXT PRIMARY KEY REFERENCES bvl_awg(awg_id),
     zulassungsanfang TEXT,
     zulassungsende TEXT,
     aufbrauchfrist TEXT,
