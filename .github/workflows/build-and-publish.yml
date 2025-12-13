@@ -87,12 +87,21 @@ jobs:
             data/output/*.sha256
           retention-days: 90
 
+      - name: Prepare GitHub Pages deployment
+        run: |
+          mkdir -p gh-pages-deploy
+          # Only copy compressed files (under 100MB GitHub limit)
+          cp data/output/pflanzenschutz.sqlite.br gh-pages-deploy/
+          cp data/output/pflanzenschutz.sqlite.zip gh-pages-deploy/
+          cp data/output/manifest.json gh-pages-deploy/
+          cp data/output/*.sha256 gh-pages-deploy/
+
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./data/output
+          publish_dir: ./gh-pages-deploy
           publish_branch: gh-pages
           force_orphan: true
           commit_message: "Update BVL database - ${{ github.event.head_commit.message }}"
