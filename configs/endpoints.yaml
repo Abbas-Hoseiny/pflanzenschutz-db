@@ -1,67 +1,70 @@
-# BVL API Endpoints Configuration
+# BVL API Endpoints Configuration - ALL 40 ENDPOINTS
 # IMPORTANT: All paths must match official BVL API 1:1
 # See: https://github.com/bundesAPI/pflanzenschutzmittelzulassung-api
 
 base_url: "https://psm-api.bvl.bund.de/ords/psm/api-v1/"
 
+# =============================================================================
+# CORE ENDPOINTS (10) - Main database tables
+# =============================================================================
 endpoints:
-  # 1. Stand - API status/date information
+  # 1. Stand - API status/date
   - name: "stand"
     path: "stand"
     table: "stand"
     primary_key: "id"
-    description: "API status and data date information"
+    description: "API status and data date"
 
   # 2. Mittel - Plant protection products
   - name: "mittel"
     path: "mittel"
     table: "mittel"
     primary_key: "kennr"
-    description: "Plant protection products (main table)"
+    description: "Plant protection products"
 
   # 3. AWG - Application areas
   - name: "awg"
     path: "awg"
     table: "awg"
     primary_key: "awg_id"
-    description: "Application areas for products"
+    description: "Application areas"
 
-  # 4. AWG Kultur - Application area cultures
+  # 4. AWG Kultur - Cultures per AWG
   - name: "awg_kultur"
     path: "awg_kultur"
     table: "awg_kultur"
     primary_key: ["awg_id", "kultur"]
-    description: "Cultures associated with application areas"
+    description: "Cultures for application areas"
 
-  # 5. AWG Schadorganismus - Application area pests
+  # 5. AWG Schadorganismus - Pests per AWG
   - name: "awg_schadorg"
     path: "awg_schadorg"
     table: "awg_schadorg"
     primary_key: ["awg_id", "schadorg"]
-    description: "Pest organisms associated with application areas"
+    description: "Pest organisms for application areas"
 
   # 6. AWG Aufwand - Application rates
   - name: "awg_aufwand"
     path: "awg_aufwand"
     table: "awg_aufwand"
     primary_key: ["awg_id", "sortier_nr"]
-    description: "Application rates for application areas"
+    description: "Application rates"
 
   # 7. AWG Wartezeit - Waiting periods
   - name: "awg_wartezeit"
     path: "awg_wartezeit"
     table: "awg_wartezeit"
     primary_key: "awg_wartezeit_nr"
-    description: "Waiting periods for application areas"
+    description: "Waiting periods"
 
-  # 8. Wirkstoffe - Active substances
+  # 8. Wirkstoff - Active substances
   - name: "wirkstoff"
     path: "wirkstoff"
     table: "wirkstoff"
     primary_key: "wirknr"
-    description: "Active substances reference data"
+    description: "Active substances"
 
-  # 9. Wirkstoffgehalt - Product active substance content
+  # 9. Wirkstoff Gehalt - Active substance content
   - name: "wirkstoff_gehalt"
     path: "wirkstoff_gehalt"
     table: "wirkstoff_gehalt"
@@ -73,4 +76,225 @@ endpoints:
     path: "mittel_vertrieb"
     table: "mittel_vertrieb"
     primary_key: ["kennr", "vertriebsfirma_nr"]
-    description: "Product distributors and manufacturers"
+    description: "Product distributors"
+
+# =============================================================================
+# EXTENDED ENDPOINTS (30+) - Additional data
+# =============================================================================
+
+  # 11. Adresse - Addresses (manufacturers, distributors)
+  - name: "adresse"
+    path: "adresse"
+    table: "adresse"
+    primary_key: "adresse_nr"
+    description: "Company addresses"
+
+  # 12. Antrag - Authorization applications
+  - name: "antrag"
+    path: "antrag"
+    table: "antrag"
+    primary_key: ["kennr", "antragnr"]
+    description: "Authorization applications"
+
+  # 13. Auflage Redu - Reduced requirements
+  - name: "auflage_redu"
+    path: "auflage_redu"
+    table: "auflage_redu"
+    primary_key: "auflagenr"
+    description: "Reduced application requirements"
+
+  # 14. Auflagen - Application requirements
+  - name: "auflagen"
+    path: "auflagen"
+    table: "auflagen"
+    primary_key: ["kennr", "awg_id", "auflagenr"]
+    description: "Application requirements and conditions"
+
+  # 15. AWG Bemerkungen - AWG remarks
+  - name: "awg_bem"
+    path: "awg_bem"
+    table: "awg_bem"
+    primary_key: ["awg_id", "sortier_nr"]
+    description: "AWG remarks and notes"
+
+  # 16. AWG Partner - Tank mix partners
+  - name: "awg_partner"
+    path: "awg_partner"
+    table: "awg_partner"
+    primary_key: ["awg_id", "kennr_partner"]
+    description: "Tank mix partners"
+
+  # 17. AWG Partner Aufwand - Partner application rates
+  - name: "awg_partner_aufwand"
+    path: "awg_partner_aufwand"
+    table: "awg_partner_aufwand"
+    primary_key: ["awg_id", "kennr_partner", "sortier_nr"]
+    description: "Partner product application rates"
+
+  # 18. AWG Verwendungszweck - Intended use
+  - name: "awg_verwendungszweck"
+    path: "awg_verwendungszweck"
+    table: "awg_verwendungszweck"
+    primary_key: ["awg_id", "verwendungszweck"]
+    description: "Intended use codes"
+
+  # 19. AWG Wartezeit Ausgenom Kultur - Waiting period exceptions
+  - name: "awg_wartezeit_ausg_kultur"
+    path: "awg_wartezeit_ausg_kultur"
+    table: "awg_wartezeit_ausg_kultur"
+    primary_key: ["awg_wartezeit_nr", "kultur"]
+    description: "Waiting period culture exceptions"
+
+  # 20. AWG Zeitpunkt - Application timing
+  - name: "awg_zeitpunkt"
+    path: "awg_zeitpunkt"
+    table: "awg_zeitpunkt"
+    primary_key: ["awg_id", "zeitpunkt"]
+    description: "Application timing codes"
+
+  # 21. AWG Zulassung - AWG authorization details
+  - name: "awg_zulassung"
+    path: "awg_zulassung"
+    table: "awg_zulassung"
+    primary_key: "awg_id"
+    description: "AWG authorization dates"
+
+  # 22. GHS Gefahrenhinweise - GHS hazard statements
+  - name: "ghs_gefahrenhinweise"
+    path: "ghs_gefahrenhinweise"
+    table: "ghs_gefahrenhinweise"
+    primary_key: ["kennr", "hinweis_kode"]
+    description: "GHS hazard statements (H-codes)"
+
+  # 23. GHS Gefahrensymbole - GHS hazard symbols
+  - name: "ghs_gefahrensymbole"
+    path: "ghs_gefahrensymbole"
+    table: "ghs_gefahrensymbole"
+    primary_key: ["kennr", "symbol_kode"]
+    description: "GHS hazard symbols (pictograms)"
+
+  # 24. GHS Sicherheitshinweise - GHS safety statements
+  - name: "ghs_sicherheitshinweise"
+    path: "ghs_sicherheitshinweise"
+    table: "ghs_sicherheitshinweise"
+    primary_key: ["kennr", "hinweis_kode"]
+    description: "GHS safety statements (P-codes)"
+
+  # 25. GHS Signalwörter - GHS signal words
+  - name: "ghs_signalwoerter"
+    path: "ghs_signalwoerter"
+    table: "ghs_signalwoerter"
+    primary_key: "kennr"
+    description: "GHS signal words"
+
+  # 26. Hinweis - Product notices
+  - name: "hinweis"
+    path: "hinweis"
+    table: "hinweis"
+    primary_key: ["kennr", "hinweis_art", "sortier_nr"]
+    description: "Product notices and hints"
+
+  # 27. Kodeliste - Code lists
+  - name: "kodeliste"
+    path: "kodeliste"
+    table: "kodeliste"
+    primary_key: "kodeliste_nr"
+    description: "Code list definitions"
+
+  # 28. Kodeliste Feldname - Code list field names
+  - name: "kodeliste_feldname"
+    path: "kodeliste_feldname"
+    table: "kodeliste_feldname"
+    primary_key: "feld"
+    description: "Code list field mappings"
+
+  # 29. Kode - Code values (lookups)
+  - name: "kode"
+    path: "kode"
+    table: "kode"
+    primary_key: ["kodeliste", "kode", "sprache"]
+    description: "Code values and translations"
+
+  # 30. Kultur Gruppe - Culture groups
+  - name: "kultur_gruppe"
+    path: "kultur_gruppe"
+    table: "kultur_gruppe"
+    primary_key: ["gruppe", "kultur"]
+    description: "Culture groupings"
+
+  # 31. Mittel Abgelaufen - Expired products
+  - name: "mittel_abgelaufen"
+    path: "mittel_abgelaufen"
+    table: "mittel_abgelaufen"
+    primary_key: "kennr"
+    description: "Expired products"
+
+  # 32. Mittel Abpackung - Package sizes
+  - name: "mittel_abpackung"
+    path: "mittel_abpackung"
+    table: "mittel_abpackung"
+    primary_key: ["kennr", "sortier_nr"]
+    description: "Product package sizes"
+
+  # 33. Mittel Gefahrensymbol - Old hazard symbols
+  - name: "mittel_gefahren_symbol"
+    path: "mittel_gefahren_symbol"
+    table: "mittel_gefahren_symbol"
+    primary_key: ["kennr", "gefahren_symbol"]
+    description: "Old hazard symbols (pre-GHS)"
+
+  # 34. Mittel Wirkbereich - Product effect areas
+  - name: "mittel_wirkbereich"
+    path: "mittel_wirkbereich"
+    table: "mittel_wirkbereich"
+    primary_key: ["kennr", "wirkbereich"]
+    description: "Product effect areas"
+
+  # 35. Parallelimport Abgelaufen - Expired parallel imports
+  - name: "parallelimport_abgelaufen"
+    path: "parallelimport_abgelaufen"
+    table: "parallelimport_abgelaufen"
+    primary_key: "kennr"
+    description: "Expired parallel imports"
+
+  # 36. Parallelimport Gültig - Valid parallel imports
+  - name: "parallelimport_gueltig"
+    path: "parallelimport_gueltig"
+    table: "parallelimport_gueltig"
+    primary_key: "kennr"
+    description: "Valid parallel imports"
+
+  # 37. Schadorganismus Gruppe - Pest groups
+  - name: "schadorg_gruppe"
+    path: "schadorg_gruppe"
+    table: "schadorg_gruppe"
+    primary_key: ["gruppe", "schadorg"]
+    description: "Pest organism groupings"
+
+  # 38. Stärkungsmittel - Plant strengtheners
+  - name: "staerkung"
+    path: "staerkung"
+    table: "staerkung"
+    primary_key: "kennr"
+    description: "Plant strengthening products"
+
+  # 39. Stärkungsmittel Vertrieb - Strengthener distributors
+  - name: "staerkung_vertrieb"
+    path: "staerkung_vertrieb"
+    table: "staerkung_vertrieb"
+    primary_key: ["kennr", "vertriebsfirma_nr"]
+    description: "Strengthener distributors"
+
+  # 40. Zusatzstoff - Adjuvants
+  - name: "zusatzstoff"
+    path: "zusatzstoff"
+    table: "zusatzstoff"
+    primary_key: "kennr"
+    description: "Adjuvants"
+
+  # 41. Zusatzstoff Vertrieb - Adjuvant distributors
+  - name: "zusatzstoff_vertrieb"
+    path: "zusatzstoff_vertrieb"
+    table: "zusatzstoff_vertrieb"
+    primary_key: ["kennr", "vertriebsfirma_nr"]
+    description: "Adjuvant distributors"
