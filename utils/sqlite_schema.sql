@@ -497,3 +497,47 @@ CREATE TABLE IF NOT EXISTS bvl_lookup_schadorg (
 
 CREATE INDEX IF NOT EXISTS idx_bvl_lookup_kultur_label ON bvl_lookup_kultur(label);
 CREATE INDEX IF NOT EXISTS idx_bvl_lookup_schadorg_label ON bvl_lookup_schadorg(label);
+
+-- ==============================================================================
+-- ENRICHMENT TABLES (for bio/organic products and extras)
+-- ==============================================================================
+
+-- Product active substances relationship
+CREATE TABLE IF NOT EXISTS bvl_mittel_wirkstoff (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    kennr TEXT,
+    wirkstoff_kode TEXT,
+    wirkstoff_name TEXT,
+    gehalt REAL,
+    gehalt_einheit TEXT,
+    FOREIGN KEY (kennr) REFERENCES bvl_mittel(kennr),
+    FOREIGN KEY (wirkstoff_kode) REFERENCES bvl_wirkstoff(wirknr)
+);
+
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_wirkstoff_kennr ON bvl_mittel_wirkstoff(kennr);
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_wirkstoff_kode ON bvl_mittel_wirkstoff(wirkstoff_kode);
+
+-- Bio/organic enrichment data
+CREATE TABLE IF NOT EXISTS bvl_mittel_enrichments (
+    kennr TEXT PRIMARY KEY,
+    is_bio INTEGER DEFAULT 0,
+    certification_body TEXT,
+    notes TEXT,
+    source TEXT,
+    FOREIGN KEY (kennr) REFERENCES bvl_mittel(kennr)
+);
+
+CREATE INDEX IF NOT EXISTS idx_bvl_mittel_enrichments_bio ON bvl_mittel_enrichments(is_bio);
+
+-- View for products with bio/extras information
+CREATE VIEW IF NOT EXISTS bvl_mittel_extras AS
+SELECT 
+    m.kennr,
+    m.mittelname,
+    m.zul_ende AS zulassungsende,
+    COALESCE(e.is_bio, 0) AS is_bio,
+    e.certification_body,
+    e.notes,
+    e.source
+FROM bvl_mittel m
+LEFT JOIN bvl_mittel_enrichments e ON m.kennr = e.kennr;
