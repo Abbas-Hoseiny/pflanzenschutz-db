@@ -478,3 +478,22 @@ CREATE TABLE IF NOT EXISTS bvl_meta (
     value TEXT,
     updated_at TEXT DEFAULT (datetime('now'))
 );
+
+-- ==============================================================================
+-- LOOKUP TABLES (derived from bvl_kode for PSM App compatibility)
+-- ==============================================================================
+
+-- Kultur Lookup (für schnelles Label-Lookup)
+CREATE TABLE IF NOT EXISTS bvl_lookup_kultur (
+    code TEXT PRIMARY KEY,
+    label TEXT
+);
+
+-- Schadorg Lookup (für schnelles Label-Lookup)
+CREATE TABLE IF NOT EXISTS bvl_lookup_schadorg (
+    code TEXT PRIMARY KEY,
+    label TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_bvl_lookup_kultur_label ON bvl_lookup_kultur(label);
+CREATE INDEX IF NOT EXISTS idx_bvl_lookup_schadorg_label ON bvl_lookup_schadorg(label);

@@ -133,6 +133,26 @@ def enrich_tables_with_lookups(db_manager):
     count = db_manager.execute_update(sql)
     logger.info(f"Updated {count} websites in bvl_mittel_vertrieb")
     
+    # Populate bvl_lookup_kultur from bvl_kode (kodeliste 51 = KLTGR/Kulturen)
+    sql = """
+    INSERT OR REPLACE INTO bvl_lookup_kultur (code, label)
+    SELECT kode, kodetext
+    FROM bvl_kode
+    WHERE kodeliste = 51 AND sprache = 'DE'
+    """
+    count = db_manager.execute_update(sql)
+    logger.info(f"Populated {count} kultur lookups from bvl_kode")
+    
+    # Populate bvl_lookup_schadorg from bvl_kode (kodeliste 52 = SOORCD/Schadorganismen)
+    sql = """
+    INSERT OR REPLACE INTO bvl_lookup_schadorg (code, label)
+    SELECT kode, kodetext
+    FROM bvl_kode
+    WHERE kodeliste = 52 AND sprache = 'DE'
+    """
+    count = db_manager.execute_update(sql)
+    logger.info(f"Populated {count} schadorg lookups from bvl_kode")
+    
     logger.info("Enrichment completed")
 
 
