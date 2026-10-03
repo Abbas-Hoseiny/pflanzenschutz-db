@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "api_version": "v1",
+  "generated_at": "2026-10-03T03:31:21.610313Z",
+  "files": [
+    {
+      "name": "pflanzenschutz.sqlite.br",
+      "url": "https://abbas-hoseiny.github.io/pflanzenschutz-db/pflanzenschutz.sqlite.br",
+      "size": 6804913,
+      "sha256": "e6f0597fd148d5fd1bfe76384522f3b97fc54b2daf2e27e3a7f90d1fcc2feb27",
+      "encoding": "brotli",
+      "type": "sqlite"
+    },
+    {
+      "name": "pflanzenschutz.sqlite.zip",
+      "url": "https://abbas-hoseiny.github.io/pflanzenschutz-db/pflanzenschutz.sqlite.zip",
+      "size": 12524269,
+      "sha256": "a65f681bf8b00e7ca03564bcba67262f799a73d8536b872a8fb3972af172d77d",
+      "encoding": "zip",
+      "type": "sqlite"
+    }
+  ],
+  "tables": {
+    "bvl_stand": 1,
+    "bvl_mittel": 2165,
+    "bvl_awg": 30836,
+    "bvl_awg_kultur": 42518,
+    "bvl_awg_schadorg": 46955,
+    "bvl_awg_aufwand": 39567,
+    "bvl_awg_wartezeit": 16469,
+    "bvl_wirkstoff": 482,
+    "bvl_mittel_wirkstoff": 0,
+    "bvl_mittel_vertrieb": 1822,
+    "bvl_mittel_enrichments": 59
+  },
+  "build": {
+    "start_time": "2026-10-03T03:26:21.515541Z",
+    "end_time": "2026-10-03T03:31:21.610274Z",
+    "duration_seconds": 300.094733,
+    "python_version": "3.11.16",
+    "runner": "github-actions"
+  }
+}
