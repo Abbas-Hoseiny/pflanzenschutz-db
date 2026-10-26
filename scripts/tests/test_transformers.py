@@ -394,7 +394,16 @@ def test_map_kode_record():
 
 
 def test_map_kultur_gruppe_record():
-    """Test kultur_gruppe record mapping."""
+    """Test kultur_gruppe record mapping (Feldname wie in der echten BVL-API)."""
+    raw = {"m_row$$": "AAA", "kultur_gruppe": "NNNGE", "kultur": "TRZAW"}
+    result = map_kultur_gruppe_record(raw)
+    
+    assert result["gruppe"] == "NNNGE"
+    assert result["kultur"] == "TRZAW"
+
+
+def test_map_kultur_gruppe_record_legacy_key():
+    """Älteres Format mit Feld "gruppe" wird weiter unterstützt."""
     raw = {"gruppe": "GETREIDE", "kultur": "TRZAW", "sortier_nr": 1}
     result = map_kultur_gruppe_record(raw)
     
@@ -403,7 +412,16 @@ def test_map_kultur_gruppe_record():
 
 
 def test_map_schadorg_gruppe_record():
-    """Test schadorg_gruppe record mapping."""
+    """Test schadorg_gruppe record mapping (Feldname wie in der echten BVL-API)."""
+    raw = {"m_row$$": "AAA", "schadorg": "ZUSSP", "schadorg_gruppe": "ZWECKB"}
+    result = map_schadorg_gruppe_record(raw)
+    
+    assert result["gruppe"] == "ZWECKB"
+    assert result["schadorg"] == "ZUSSP"
+
+
+def test_map_schadorg_gruppe_record_legacy_key():
+    """Älteres Format mit Feld "gruppe" wird weiter unterstützt."""
     raw = {"gruppe": "PILZE", "schadorg": "SEPTTR", "sortier_nr": 1}
     result = map_schadorg_gruppe_record(raw)
     

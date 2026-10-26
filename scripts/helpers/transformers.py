@@ -377,9 +377,12 @@ def map_kode_record(record: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def map_kultur_gruppe_record(record: Dict[str, Any]) -> Dict[str, Any]:
-    """Map kultur_gruppe record. API: /kultur_gruppe/"""
+    """Map kultur_gruppe record. API: /kultur_gruppe/
+
+    Die BVL-API liefert die Gruppe im Feld "kultur_gruppe" (nicht "gruppe").
+    """
     return {
-        "gruppe": record.get("gruppe"),
+        "gruppe": record.get("kultur_gruppe", record.get("gruppe")),
         "kultur": record.get("kultur"),
         "sortier_nr": record.get("sortier_nr"),
         "payload_json": json.dumps(record, ensure_ascii=False)
@@ -451,9 +454,12 @@ def map_parallelimport_gueltig_record(record: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def map_schadorg_gruppe_record(record: Dict[str, Any]) -> Dict[str, Any]:
-    """Map schadorg_gruppe record. API: /schadorg_gruppe/"""
+    """Map schadorg_gruppe record. API: /schadorg_gruppe/
+
+    Die BVL-API liefert die Gruppe im Feld "schadorg_gruppe" (nicht "gruppe").
+    """
     return {
-        "gruppe": record.get("gruppe"),
+        "gruppe": record.get("schadorg_gruppe", record.get("gruppe")),
         "schadorg": record.get("schadorg"),
         "sortier_nr": record.get("sortier_nr"),
         "payload_json": json.dumps(record, ensure_ascii=False)
